@@ -3,8 +3,11 @@ import { curarFotos } from "@/lib/curate";
 import {
   MAX_FOTOS,
   MIN_FOTOS,
+  OBJETIVOS,
+  OBJETIVO_PADRAO,
   type ApiError,
   type CuratePayload,
+  type ObjetivoId,
   type ResultadoCuradoria,
 } from "@/lib/types";
 
@@ -47,8 +50,13 @@ export async function POST(req: Request) {
     return erro(`Máximo de ${MAX_FOTOS} fotos por vez.`, 400);
   }
 
+  // Objetivo é opcional; valida contra a lista conhecida (fallback no padrão).
+  const objetivo: ObjetivoId = OBJETIVOS.some((o) => o.id === body?.objetivo)
+    ? (body.objetivo as ObjetivoId)
+    : OBJETIVO_PADRAO;
+
   try {
-    const resultado = await curarFotos(images);
+    const resultado = await curarFotos(images, objetivo);
     return NextResponse.json<ResultadoCuradoria>(resultado);
   } catch (err) {
     const msg =

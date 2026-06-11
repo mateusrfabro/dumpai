@@ -1,11 +1,12 @@
 import Link from "next/link";
+import QuizObjetivo from "@/components/QuizObjetivo";
 
 // Link de checkout da Kiwify. Pode ser sobrescrito por NEXT_PUBLIC_PAYMENT_LINK
 // na Vercel; o default abaixo garante o botão funcionando mesmo sem a env var.
 const PAYMENT_LINK =
   process.env.NEXT_PUBLIC_PAYMENT_LINK || "https://pay.kiwify.com.br/gQ3ooQ5";
 
-// Cartões decorativos que imitam um photo dump (sem imagens externas).
+// Cartões decorativos que imitam um photo dump (prévia, sem imagens externas).
 const CARDS = [
   { emoji: "📸", bg: "bg-coral", rot: "-rotate-6", delay: "0s" },
   { emoji: "🎉", bg: "bg-amber", rot: "rotate-3", delay: "0.6s" },
@@ -43,19 +44,19 @@ export default function LandingPage() {
             ✨ Curadoria por Inteligência Artificial
           </span>
           <h1 className="mt-4 font-display text-[2.1rem] font-extrabold leading-[1.05] tracking-tight">
-            A IA que escolhe as{" "}
-            <span className="text-coral">10 melhores fotos</span> para o seu
-            Photo Dump no Instagram
+            As fotos do seu rolê com mais chance de{" "}
+            <span className="text-coral">bombar</span> no Instagram
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
-            Suba até 30 fotos da rolê e deixa a IA fazer a parte chata: ela
-            escolhe as nítidas, com sorrisos e momentos espontâneos — sem
-            repetição — e monta o carrossel perfeito.
+            Suba até 30 fotos e a IA escolhe as <strong>10 com maior potencial
+            de engajamento</strong> — nítidas, com sorrisos e momentos
+            espontâneos, sem repetição — e monta seu carrossel perfeito em
+            segundos.
           </p>
         </section>
 
-        {/* Pilha de fotos animada */}
-        <section className="relative mt-10 mb-2 grid h-44 place-items-center">
+        {/* Pilha de fotos animada (prévia) */}
+        <section className="relative mt-10 grid place-items-center">
           <div className="flex items-center">
             {CARDS.map((c, i) => (
               <div
@@ -67,6 +68,9 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+          <p className="mt-3 text-xs text-muted">
+            Prévia de como fica seu dump 👆
+          </p>
         </section>
 
         {/* Bullets */}
@@ -86,14 +90,32 @@ export default function LandingPage() {
           ))}
         </ul>
 
+        {/* Quiz de objetivo — engaja e personaliza a curadoria */}
+        <section className="mt-8 rounded-3xl border border-line bg-paper/60 p-5">
+          <QuizObjetivo variante="landing" />
+          <p className="mt-3 text-xs text-muted">
+            A IA ajusta a escolha das fotos pro seu objetivo. Escolhe pra ver
+            sua seleção depois. 👇
+          </p>
+        </section>
+
         {/* CTA */}
-        <section className="mt-10">
+        <section className="mt-8">
+          <div className="mb-3 flex items-center justify-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber/20 px-3 py-1 text-xs font-bold text-ink">
+              🔥 Oferta de lançamento
+            </span>
+          </div>
           <Link
             href={PAYMENT_LINK}
             className="group block rounded-2xl bg-coral px-6 py-5 text-center shadow-[0_10px_30px_-8px_rgba(255,84,54,0.7)] transition active:scale-[0.98]"
           >
             <span className="block font-display text-xl font-extrabold text-paper">
-              Liberar IA por apenas R$ 19,90
+              Liberar IA por{" "}
+              <span className="font-semibold text-paper/60 line-through">
+                R$ 29,90
+              </span>{" "}
+              R$ 19,90
             </span>
             <span className="mt-0.5 block text-xs font-medium text-paper/80">
               Pagamento único • Pix na hora • Acesso imediato

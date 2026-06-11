@@ -4,9 +4,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { estaLiberado } from "@/lib/unlock";
 import { comprimirVarias } from "@/lib/images";
-import { MAX_FOTOS, MIN_FOTOS, type ResultadoCuradoria } from "@/lib/types";
+import {
+  MAX_FOTOS,
+  MIN_FOTOS,
+  OBJETIVO_PADRAO,
+  type ObjetivoId,
+  type ResultadoCuradoria,
+} from "@/lib/types";
 import LoadingDump from "@/components/LoadingDump";
 import ResultadoDump from "@/components/ResultadoDump";
+import QuizObjetivo, { lerObjetivo } from "@/components/QuizObjetivo";
 
 type Estado = "checando" | "upload" | "carregando" | "resultado";
 
@@ -24,6 +31,7 @@ export default function AppPage() {
     fotos: string[];
     justificativa: string;
   } | null>(null);
+  const [objetivo, setObjetivo] = useState<ObjetivoId>(OBJETIVO_PADRAO);
 
   const inputRef = useRef<HTMLInputElement>(null);
   // Espelha as fotos pra revogar object URLs no unmount sem re-disparar o efeito.
@@ -33,6 +41,7 @@ export default function AppPage() {
   // Guard de acesso: sem flag de pagamento, volta pra landing.
   useEffect(() => {
     if (estaLiberado()) {
+      setObjetivo(lerObjetivo());
       setEstado("upload");
     } else {
       router.replace("/");
@@ -101,7 +110,7 @@ export default function AppPage() {
       const resp = await fetch("/api/curate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images }),
+        body: JSON.stringify({ images, objetivo }),
       });
 
       if (!resp.ok) {
@@ -126,7 +135,7 @@ export default function AppPage() {
       setErro(e instanceof Error ? e.message : "Erro inesperado.");
       setEstado("upload");
     }
-  }, [fotos]);
+  }, [fotos, objetivo]);
 
   // ── Render por estado ────────────────────────────────────────────────────
 
@@ -178,6 +187,14 @@ export default function AppPage() {
         Escolha de {MIN_FOTOS} a {MAX_FOTOS} fotos. Quanto mais variedade, melhor
         a seleção.
       </p>
+
+      {/* Objetivo de engajamento — ajusta o critério da IA */}
+      <div className="mt-6 rounded-3xl border border-line bg-paper/60 p-4">
+        <QuizObjetivo variante="app" onSelect={setObjetivo} />
+        <p className="mt-2 text-xs text-muted">
+          A IA prioriza as fotos com mais chance de bater essa meta. 🎯
+        </p>
+      </div>
 
       <input
         ref={inputRef}

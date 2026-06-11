@@ -18,10 +18,52 @@ export interface ResultadoCuradoria {
   justificativa: string;
 }
 
+/** Objetivo de engajamento que o usuário escolhe — ajusta o critério da IA. */
+export type ObjetivoId = "curtidas" | "comentarios" | "compartilhamentos";
+
+export interface ObjetivoOpcao {
+  id: ObjetivoId;
+  emoji: string;
+  titulo: string;
+  /** Dica injetada no prompt da IA para priorizar as fotos certas. */
+  hintIA: string;
+}
+
+export const OBJETIVOS: ObjetivoOpcao[] = [
+  {
+    id: "curtidas",
+    emoji: "❤️",
+    titulo: "+ Curtidas",
+    hintIA:
+      "fotos esteticamente fortes e 'instagramáveis' — boa luz, enquadramento, cores e pessoas bonitas/carismáticas na imagem",
+  },
+  {
+    id: "comentarios",
+    emoji: "💬",
+    titulo: "+ Comentários",
+    hintIA:
+      "fotos que provocam conversa — expressões marcantes, situações engraçadas ou inusitadas, gente interagindo e reações espontâneas",
+  },
+  {
+    id: "compartilhamentos",
+    emoji: "🔁",
+    titulo: "+ Compartilhamentos",
+    hintIA:
+      "fotos marcantes e relacionáveis — momentos icônicos, emoção ou humor que dão vontade de mostrar pros amigos e repostar",
+  },
+];
+
+export const OBJETIVO_PADRAO: ObjetivoId = "curtidas";
+
+/** Chave do localStorage onde guardamos o objetivo escolhido. */
+export const OBJETIVO_KEY = "dumpai_objetivo";
+
 /** Payload que o client envia para /api/curate. */
 export interface CuratePayload {
   /** Data URLs (data:image/jpeg;base64,...) já comprimidas no navegador. */
   images: string[];
+  /** Objetivo de engajamento (opcional; default = curtidas). */
+  objetivo?: ObjetivoId;
 }
 
 /** Resposta de erro padronizada da API Route. */

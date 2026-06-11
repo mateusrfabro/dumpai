@@ -2,7 +2,13 @@
 // A ANTHROPIC_API_KEY é lida aqui e jamais chega ao bundle do navegador.
 
 import Anthropic from "@anthropic-ai/sdk";
-import { ALVO_SELECAO, type ResultadoCuradoria } from "./types";
+import {
+  ALVO_SELECAO,
+  OBJETIVOS,
+  OBJETIVO_PADRAO,
+  type ObjetivoId,
+  type ResultadoCuradoria,
+} from "./types";
 
 /** Default barato p/ testar; troque via env ANTHROPIC_MODEL (ver .env.local.example). */
 const MODELO_PADRAO = "claude-haiku-4-5";
@@ -88,6 +94,7 @@ function sanitizarIndices(brutos: unknown, totalFotos: number): number[] {
  */
 export async function curarFotos(
   dataUrls: string[],
+  objetivo: ObjetivoId = OBJETIVO_PADRAO,
 ): Promise<ResultadoCuradoria> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -112,12 +119,15 @@ export async function curarFotos(
     conteudo.push({ type: "text", text: `Foto índice ${i}:` });
     conteudo.push({ type: "image", source: { type: "base64", ...src } });
   });
+  const opcao = OBJETIVOS.find((o) => o.id === objetivo) ?? OBJETIVOS[0];
   conteudo.push({
     type: "text",
     text:
+      `O objetivo do usuário é conseguir ${opcao.titulo.toLowerCase()} no Instagram. ` +
+      `Dê preferência a ${opcao.hintIA}. ` +
       `Selecione as ${ALVO_SELECAO} melhores fotos (ou menos, se houver poucas) ` +
       `para o photo dump. Retorne os índices 0-based das escolhidas e uma frase ` +
-      `curta justificando a combinação.`,
+      `curta justificando a combinação, conectando-a a esse objetivo.`,
   });
 
   let resposta: Anthropic.Messages.Message;
