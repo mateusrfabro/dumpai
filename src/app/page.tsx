@@ -1,6 +1,9 @@
 import Link from "next/link";
 
-const PAYMENT_LINK = process.env.NEXT_PUBLIC_PAYMENT_LINK || "#";
+// Link de checkout da Kiwify. Pode ser sobrescrito por NEXT_PUBLIC_PAYMENT_LINK
+// na Vercel; o default abaixo garante o botão funcionando mesmo sem a env var.
+const PAYMENT_LINK =
+  process.env.NEXT_PUBLIC_PAYMENT_LINK || "https://pay.kiwify.com.br/gQ3ooQ5";
 
 // Cartões decorativos que imitam um photo dump (sem imagens externas).
 const CARDS = [
