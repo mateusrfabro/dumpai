@@ -10,7 +10,7 @@ export const COOKIE_NAME = "dumpai_acesso";
 const TTL_SEG = 180 * 24 * 60 * 60; // 180 dias
 
 /** Quantas gerações cada compra (e-mail) tem direito. */
-export const MAX_USOS = Number(process.env.USOS_POR_COMPRA) || 10;
+export const MAX_USOS = Number(process.env.USOS_POR_COMPRA) || 3;
 
 const COOKIE_SECRET = process.env.DUMPAI_COOKIE_SECRET || "";
 
