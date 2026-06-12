@@ -24,18 +24,6 @@ export async function POST(req: Request) {
   const valido =
     assinaturaRecebida === sha1 || assinaturaRecebida === sha256;
 
-  // LOG TEMPORÁRIO — durante o setup, pra confirmar o algoritmo da Kiwify.
-  console.log(
-    "[kiwify-webhook] recebida:",
-    assinaturaRecebida.slice(0, 12),
-    "| sha1:",
-    sha1.slice(0, 12),
-    "| sha256:",
-    sha256.slice(0, 12),
-    "| valido:",
-    valido,
-  );
-
   if (!valido) {
     return new Response("assinatura inválida", { status: 401 });
   }
