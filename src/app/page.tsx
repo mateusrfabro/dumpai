@@ -33,9 +33,12 @@ export default function LandingPage() {
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 pb-10 pt-6">
         <header className="flex items-center justify-between">
           <Brand />
-          <span className="rounded-full border border-line bg-paper px-3 py-1 text-xs font-medium text-muted">
-            Pix • R$ 19,90
-          </span>
+          <Link
+            href="/success"
+            className="rounded-full border border-line bg-paper px-3 py-1 text-xs font-semibold text-coral-ink transition active:scale-95"
+          >
+            Já comprei? Entrar
+          </Link>
         </header>
 
         {/* Hero */}
@@ -125,6 +128,15 @@ export default function LandingPage() {
             Sem assinatura, sem mensalidade. Cada compra inclui{" "}
             <strong className="text-ink">3 gerações</strong> (escolha as 10
             melhores 3 vezes).
+          </p>
+          <p className="mt-2 text-center text-xs text-muted">
+            Já comprou?{" "}
+            <Link
+              href="/success"
+              className="font-semibold text-coral-ink underline"
+            >
+              Entrar com seu e-mail
+            </Link>
           </p>
         </section>
 

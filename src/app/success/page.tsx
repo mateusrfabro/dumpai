@@ -91,7 +91,7 @@ export default function SuccessPage() {
           ✓
         </div>
         <h1 className="mt-5 font-display text-2xl font-extrabold tracking-tight">
-          Pagamento confirmado! 🎉
+          Ative seu acesso 🔓
         </h1>
 
         {fase === "ativando" ? (
