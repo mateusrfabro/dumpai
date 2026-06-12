@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { curarFotos } from "@/lib/curate";
 import { checarRateLimit } from "@/lib/ratelimit";
+import { lerCookieAcesso, paywallAtivo, verificarAcesso } from "@/lib/acesso";
 import {
   MAX_FOTOS,
   MIN_FOTOS,
@@ -35,6 +36,15 @@ export async function POST(req: Request) {
     return erro(
       "Você fez muitas gerações em pouco tempo. Tente de novo daqui a pouco. ⏳",
       429,
+    );
+  }
+
+  // Paywall real: exige o cookie de acesso (só quando PAYWALL_ATIVO=true).
+  // Sem o cookie válido, não gasta crédito com IA. Abrir /success na mão não basta.
+  if (paywallAtivo && !verificarAcesso(lerCookieAcesso(req))) {
+    return erro(
+      "Acesso não liberado. Entre com o e-mail da sua compra para liberar a IA.",
+      401,
     );
   }
 

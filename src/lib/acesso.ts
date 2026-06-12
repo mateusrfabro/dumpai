@@ -1,0 +1,93 @@
+// Paywall real, server-side. Duas peças:
+//  1) Registro de pagamento no KV (gravado pelo webhook da Kiwify).
+//  2) Cookie de acesso assinado (HMAC) — não falsificável, HttpOnly.
+// O gate só é EXIGIDO quando PAYWALL_ATIVO === "true" (rollout seguro).
+
+import crypto from "crypto";
+import { Redis } from "@upstash/redis";
+
+export const COOKIE_NAME = "dumpai_acesso";
+const TTL_SEG = 180 * 24 * 60 * 60; // 180 dias
+
+const COOKIE_SECRET = process.env.DUMPAI_COOKIE_SECRET || "";
+
+export const paywallAtivo = process.env.PAYWALL_ATIVO === "true";
+
+function redis(): Redis | null {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return null;
+  return new Redis({ url, token });
+}
+
+function normEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
+
+// ── Registro de pagamento (KV) ──────────────────────────────────────────────
+
+export async function marcarPago(email: string, orderId: string): Promise<void> {
+  const r = redis();
+  if (!r || !email) return;
+  await r.set(`pago:email:${normEmail(email)}`, orderId || "1", { ex: TTL_SEG });
+  if (orderId) await r.set(`pago:order:${orderId}`, normEmail(email), { ex: TTL_SEG });
+}
+
+export async function revogarPagoPorEmail(email: string): Promise<void> {
+  const r = redis();
+  if (!r || !email) return;
+  await r.del(`pago:email:${normEmail(email)}`);
+}
+
+export async function estaPagoEmail(email: string): Promise<boolean> {
+  const r = redis();
+  if (!r || !email) return false;
+  return Boolean(await r.get(`pago:email:${normEmail(email)}`));
+}
+
+/** Retorna o e-mail pago associado a um order_id (ou null). */
+export async function emailDoPedido(orderId: string): Promise<string | null> {
+  const r = redis();
+  if (!r || !orderId) return null;
+  const v = await r.get<string>(`pago:order:${orderId}`);
+  return v || null;
+}
+
+// ── Cookie de acesso assinado ───────────────────────────────────────────────
+
+/** Gera o token assinado: `email|exp|hmac`. */
+export function assinarAcesso(email: string): string {
+  const exp = Date.now() + TTL_SEG * 1000;
+  const corpo = `${normEmail(email)}|${exp}`;
+  const sig = crypto
+    .createHmac("sha256", COOKIE_SECRET)
+    .update(corpo)
+    .digest("hex");
+  return `${corpo}|${sig}`;
+}
+
+/** Verifica o token do cookie (assinatura + validade). */
+export function verificarAcesso(token: string | undefined): boolean {
+  if (!token || !COOKIE_SECRET) return false;
+  const partes = token.split("|");
+  if (partes.length !== 3) return false;
+  const [email, exp, sig] = partes;
+  const esperado = crypto
+    .createHmac("sha256", COOKIE_SECRET)
+    .update(`${email}|${exp}`)
+    .digest("hex");
+  const a = Buffer.from(sig);
+  const b = Buffer.from(esperado);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+  return Number(exp) > Date.now();
+}
+
+/** Lê o cookie de acesso do header Cookie de uma Request. */
+export function lerCookieAcesso(req: Request): string | undefined {
+  const raw = req.headers.get("cookie") || "";
+  const item = raw
+    .split(";")
+    .map((s) => s.trim())
+    .find((s) => s.startsWith(`${COOKIE_NAME}=`));
+  return item ? decodeURIComponent(item.slice(COOKIE_NAME.length + 1)) : undefined;
+}

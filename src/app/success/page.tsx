@@ -9,11 +9,26 @@ export default function SuccessPage() {
 
   useEffect(() => {
     // A plataforma de pagamento (Kiwify) redireciona pra cá após o Pix.
-    // Liberamos o acesso e mandamos pro app.
+    // Marca o acesso na UI e tenta liberar o cookie automaticamente se a Kiwify
+    // tiver passado o pedido no redirect (auto-claim). Se não, o /app pede o e-mail.
     try {
       localStorage.setItem(UNLOCK_KEY, "true");
     } catch {
       // localStorage indisponível (modo privado raro) — segue mesmo assim.
+    }
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const orderId =
+        params.get("order_id") || params.get("order") || params.get("id");
+      if (orderId) {
+        fetch("/api/claim", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId }),
+        }).catch(() => {});
+      }
+    } catch {
+      // ignora
     }
     const t = setTimeout(() => router.replace("/app"), 1600);
     return () => clearTimeout(t);

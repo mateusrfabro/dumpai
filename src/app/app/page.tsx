@@ -32,6 +32,11 @@ export default function AppPage() {
     justificativa: string;
   } | null>(null);
   const [objetivo, setObjetivo] = useState<ObjetivoId>(OBJETIVO_PADRAO);
+  // Paywall: quando a IA responde 401, pedimos o e-mail da compra pra liberar.
+  const [claimNecessario, setClaimNecessario] = useState(false);
+  const [claimEmail, setClaimEmail] = useState("");
+  const [claimMsg, setClaimMsg] = useState<string | null>(null);
+  const [claimLoading, setClaimLoading] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   // Espelha as fotos pra revogar object URLs no unmount sem re-disparar o efeito.
@@ -113,6 +118,12 @@ export default function AppPage() {
         body: JSON.stringify({ images, objetivo }),
       });
 
+      if (resp.status === 401) {
+        // Paywall ligado e sem cookie de acesso → pedir o e-mail da compra.
+        setClaimNecessario(true);
+        setEstado("upload");
+        return;
+      }
       if (!resp.ok) {
         const data = (await resp.json().catch(() => null)) as {
           error?: string;
@@ -136,6 +147,38 @@ export default function AppPage() {
       setEstado("upload");
     }
   }, [fotos, objetivo]);
+
+  // Libera o acesso confirmando o e-mail da compra (paywall), depois tenta gerar.
+  const liberarAcesso = useCallback(async () => {
+    const email = claimEmail.trim().toLowerCase();
+    if (!email.includes("@")) {
+      setClaimMsg("Digite o e-mail que você usou na compra.");
+      return;
+    }
+    setClaimLoading(true);
+    setClaimMsg(null);
+    try {
+      const resp = await fetch("/api/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (resp.ok) {
+        setClaimNecessario(false);
+        setClaimMsg(null);
+        gerar();
+      } else {
+        const d = (await resp.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        setClaimMsg(d?.error || "Não foi possível liberar o acesso.");
+      }
+    } catch {
+      setClaimMsg("Erro de conexão. Tente de novo.");
+    } finally {
+      setClaimLoading(false);
+    }
+  }, [claimEmail, gerar]);
 
   // ── Render por estado ────────────────────────────────────────────────────
 
@@ -189,6 +232,44 @@ export default function AppPage() {
         Escolha de {MIN_FOTOS} a {MAX_FOTOS} fotos. Quanto mais variedade, melhor
         a seleção.
       </p>
+
+      {/* Liberação por e-mail (paywall) */}
+      {claimNecessario && (
+        <div className="animate-pop mt-6 rounded-3xl border border-coral/40 bg-coral-soft p-5">
+          <h2 className="font-display text-base font-bold text-coral-ink">
+            🔓 Confirme sua compra
+          </h2>
+          <p className="mt-1 text-sm text-ink">
+            Digite o e-mail que você usou na compra pra liberar a IA neste
+            aparelho.
+          </p>
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            value={claimEmail}
+            onChange={(e) => setClaimEmail(e.target.value)}
+            placeholder="seu@email.com"
+            className="mt-3 w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-coral"
+          />
+          {claimMsg && (
+            <p className="mt-2 text-sm text-coral-ink">{claimMsg}</p>
+          )}
+          <button
+            onClick={liberarAcesso}
+            disabled={claimLoading}
+            className="mt-3 w-full rounded-xl bg-coral px-6 py-3 font-display text-sm font-bold text-paper transition active:scale-[0.98] disabled:opacity-60"
+          >
+            {claimLoading ? "Liberando…" : "Liberar acesso"}
+          </button>
+          <p className="mt-2 text-center text-xs text-muted">
+            Pagou agora? Aguarde ~1 min e tente. Ainda não comprou?{" "}
+            <a href="/" className="font-semibold text-coral-ink underline">
+              Ver oferta
+            </a>
+          </p>
+        </div>
+      )}
 
       {/* Objetivo de engajamento — ajusta o critério da IA */}
       <div className="mt-6 rounded-3xl border border-line bg-paper/60 p-4">
