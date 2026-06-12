@@ -118,11 +118,13 @@ export default function LandingPage() {
               R$ 19,90
             </span>
             <span className="mt-0.5 block text-xs font-medium text-paper/80">
-              Pagamento único • Pix na hora • Acesso imediato
+              Pagamento único • Pix na hora • Inclui 3 gerações de dump
             </span>
           </Link>
           <p className="mt-3 text-center text-xs text-muted">
-            Sem assinatura. Sem mensalidade. Liberou, é seu.
+            Sem assinatura, sem mensalidade. Cada compra inclui{" "}
+            <strong className="text-ink">3 gerações</strong> (escolha as 10
+            melhores 3 vezes).
           </p>
         </section>
 
