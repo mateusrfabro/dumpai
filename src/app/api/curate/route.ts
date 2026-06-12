@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
 import { curarFotos } from "@/lib/curate";
 import { checarRateLimit } from "@/lib/ratelimit";
-import { lerCookieAcesso, paywallAtivo, verificarAcesso } from "@/lib/acesso";
+import {
+  MAX_USOS,
+  consumirUso,
+  devolverUso,
+  emailDoCookie,
+  lerCookieAcesso,
+  paywallAtivo,
+  verificarAcesso,
+} from "@/lib/acesso";
 import {
   MAX_FOTOS,
   MIN_FOTOS,
@@ -41,12 +49,14 @@ export async function POST(req: Request) {
 
   // Paywall real: exige o cookie de acesso (só quando PAYWALL_ATIVO=true).
   // Sem o cookie válido, não gasta crédito com IA. Abrir /success na mão não basta.
-  if (paywallAtivo && !verificarAcesso(lerCookieAcesso(req))) {
+  const tokenAcesso = lerCookieAcesso(req);
+  if (paywallAtivo && !verificarAcesso(tokenAcesso)) {
     return erro(
       "Acesso não liberado. Entre com o e-mail da sua compra para liberar a IA.",
       401,
     );
   }
+  const emailAcesso = paywallAtivo ? emailDoCookie(tokenAcesso) : null;
 
   // Guarda de tamanho na borda: Base64 infla ~33%, não dá pra deixar estourar memória/timeout.
   const tamanho = Number(req.headers.get("content-length") || 0);
@@ -80,10 +90,24 @@ export async function POST(req: Request) {
     ? (body.objetivo as ObjetivoId)
     : OBJETIVO_PADRAO;
 
+  // Limite de gerações por compra (consome 1 uso; devolve se a IA falhar).
+  let restantes = MAX_USOS;
+  if (emailAcesso) {
+    const uso = await consumirUso(emailAcesso);
+    if (!uso.ok) {
+      return erro(
+        `Você já usou suas ${MAX_USOS} gerações desta compra. 💛 Para gerar mais dumps, é só liberar de novo.`,
+        403,
+      );
+    }
+    restantes = uso.restantes;
+  }
+
   try {
     const resultado = await curarFotos(images, objetivo);
-    return NextResponse.json<ResultadoCuradoria>(resultado);
+    return NextResponse.json<ResultadoCuradoria>({ ...resultado, restantes });
   } catch (err) {
+    if (emailAcesso) await devolverUso(emailAcesso); // não cobra uso se a IA falhou
     const msg =
       err instanceof Error ? err.message : "Erro inesperado. Tente novamente.";
     return erro(msg, 502);

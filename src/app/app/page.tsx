@@ -30,6 +30,7 @@ export default function AppPage() {
   const [resultado, setResultado] = useState<{
     fotos: string[];
     justificativa: string;
+    restantes?: number;
   } | null>(null);
   const [objetivo, setObjetivo] = useState<ObjetivoId>(OBJETIVO_PADRAO);
   // Paywall: quando a IA responde 401, pedimos o e-mail da compra pra liberar.
@@ -140,7 +141,11 @@ export default function AppPage() {
         throw new Error("A IA não retornou fotos válidas. Tente de novo.");
       }
 
-      setResultado({ fotos: selecionadas, justificativa: data.justificativa });
+      setResultado({
+        fotos: selecionadas,
+        justificativa: data.justificativa,
+        restantes: data.restantes,
+      });
       setEstado("resultado");
     } catch (e) {
       setErro(e instanceof Error ? e.message : "Erro inesperado.");
@@ -206,6 +211,7 @@ export default function AppPage() {
           justificativa={resultado.justificativa}
           objetivo={objetivo}
           totalEnviadas={fotos.length}
+          restantes={resultado.restantes}
           onReset={reiniciar}
         />
       </main>

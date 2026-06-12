@@ -9,6 +9,8 @@ interface Props {
   objetivo: ObjetivoId;
   /** Quantas fotos o usuário enviou (pra mostrar "10 de N"). */
   totalEnviadas: number;
+  /** Gerações restantes nesta compra (quando o paywall está ativo). */
+  restantes?: number;
   onReset: () => void;
 }
 
@@ -23,14 +25,33 @@ const HEARTS = [
   { e: "💜", left: "47%", delay: "1.1s" },
 ];
 
+function baixar(src: string, nome: string) {
+  const a = document.createElement("a");
+  a.href = src;
+  a.download = nome;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 export default function ResultadoDump({
   fotos,
   justificativa,
   objetivo,
   totalEnviadas,
+  restantes,
   onReset,
 }: Props) {
   const opcao = OBJETIVOS.find((o) => o.id === objetivo) ?? OBJETIVOS[0];
+
+  const nomeArquivo = (i: number) =>
+    `dump-${String(i + 1).padStart(2, "0")}.jpg`;
+
+  function baixarTodas() {
+    fotos.forEach((src, i) =>
+      setTimeout(() => baixar(src, nomeArquivo(i)), i * 350),
+    );
+  }
 
   return (
     <div className="animate-fade-up flex flex-1 flex-col px-5 pb-10 pt-2">
@@ -88,6 +109,13 @@ export default function ResultadoDump({
               <figcaption className="absolute left-3 top-3 rounded-full bg-ink/85 px-2.5 py-1 text-xs font-bold text-paper backdrop-blur">
                 {i + 1}/{fotos.length}
               </figcaption>
+              <button
+                onClick={() => baixar(src, nomeArquivo(i))}
+                aria-label={`Baixar foto ${i + 1}`}
+                className="absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-ink/85 text-paper backdrop-blur transition active:scale-90"
+              >
+                ⬇
+              </button>
             </figure>
           ))}
         </div>
@@ -96,16 +124,41 @@ export default function ResultadoDump({
         </p>
       </div>
 
-      <div className="mt-auto space-y-3 pt-8">
-        <p className="text-center text-xs text-muted">
-          Toque e segure numa foto pra salvar, ou tire print do carrossel.
-        </p>
+      {/* Como postar */}
+      <div className="mt-6 rounded-2xl border border-line bg-paper-2 px-4 py-3 text-sm">
+        <div className="font-display font-bold">📲 Como postar seu dump</div>
+        <ol className="mt-1 list-decimal space-y-0.5 pl-5 text-muted">
+          <li>
+            <strong className="text-ink">Salve as fotos</strong> (botão ⬇ em
+            cada uma, ou toque e segure → Salvar no iPhone).
+          </li>
+          <li>
+            No Instagram, crie um carrossel e selecione na ordem{" "}
+            <strong className="text-ink">1 → {fotos.length}</strong>.
+          </li>
+        </ol>
+      </div>
+
+      <div className="mt-auto space-y-3 pt-6">
+        <button
+          onClick={baixarTodas}
+          className="w-full rounded-2xl bg-coral px-6 py-4 font-display text-base font-extrabold text-paper shadow-[0_10px_30px_-8px_rgba(255,84,54,0.7)] transition active:scale-[0.98]"
+        >
+          ⬇ Baixar todas em ordem
+        </button>
         <button
           onClick={onReset}
-          className="w-full rounded-2xl bg-ink px-6 py-4 font-display text-base font-bold text-paper transition active:scale-[0.98]"
+          className="w-full rounded-2xl border border-line bg-paper px-6 py-3.5 font-display text-base font-bold text-ink transition active:scale-[0.98]"
         >
           Gerar outro dump
         </button>
+        {typeof restantes === "number" && (
+          <p className="text-center text-xs text-muted">
+            {restantes > 0
+              ? `Você tem ${restantes} ${restantes === 1 ? "geração restante" : "gerações restantes"} nesta compra.`
+              : "Essa foi sua última geração desta compra."}
+          </p>
+        )}
       </div>
     </div>
   );

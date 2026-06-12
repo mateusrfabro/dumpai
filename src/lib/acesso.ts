@@ -9,6 +9,9 @@ import { Redis } from "@upstash/redis";
 export const COOKIE_NAME = "dumpai_acesso";
 const TTL_SEG = 180 * 24 * 60 * 60; // 180 dias
 
+/** Quantas gerações cada compra (e-mail) tem direito. */
+export const MAX_USOS = Number(process.env.USOS_POR_COMPRA) || 10;
+
 const COOKIE_SECRET = process.env.DUMPAI_COOKIE_SECRET || "";
 
 export const paywallAtivo = process.env.PAYWALL_ATIVO === "true";
@@ -80,6 +83,41 @@ export function verificarAcesso(token: string | undefined): boolean {
   const b = Buffer.from(esperado);
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
   return Number(exp) > Date.now();
+}
+
+/** Extrai o e-mail de dentro do token do cookie (sem revalidar — use após verificar). */
+export function emailDoCookie(token: string | undefined): string | null {
+  if (!token) return null;
+  const partes = token.split("|");
+  return partes.length === 3 && partes[0] ? partes[0] : null;
+}
+
+// ── Limite de gerações por compra (KV) ──────────────────────────────────────
+
+/**
+ * Consome 1 geração do e-mail. Retorna { ok:false } se já esgotou o limite.
+ * Sem KV (dev), não limita.
+ */
+export async function consumirUso(
+  email: string,
+): Promise<{ ok: boolean; restantes: number }> {
+  const r = redis();
+  if (!r || !email) return { ok: true, restantes: MAX_USOS };
+  const key = `usos:email:${normEmail(email)}`;
+  const n = await r.incr(key);
+  if (n === 1) await r.expire(key, TTL_SEG);
+  if (n > MAX_USOS) {
+    await r.decr(key); // desfaz: mantém travado no máximo
+    return { ok: false, restantes: 0 };
+  }
+  return { ok: true, restantes: MAX_USOS - n };
+}
+
+/** Devolve 1 geração (ex: a IA falhou — não cobra o uso). */
+export async function devolverUso(email: string): Promise<void> {
+  const r = redis();
+  if (!r || !email) return;
+  await r.decr(`usos:email:${normEmail(email)}`);
 }
 
 /** Lê o cookie de acesso do header Cookie de uma Request. */

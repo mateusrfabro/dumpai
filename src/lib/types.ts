@@ -16,6 +16,8 @@ export const MIN_FOTOS = 2;
 export interface ResultadoCuradoria {
   indices: number[];
   justificativa: string;
+  /** Gerações restantes nesta compra (preenchido pela API quando o paywall está ativo). */
+  restantes?: number;
 }
 
 /** Objetivo de engajamento que o usuário escolhe — ajusta o critério da IA. */
