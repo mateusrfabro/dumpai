@@ -60,14 +60,14 @@ export default function QuizObjetivo({ onSelect, variante = "app" }: Props) {
               type="button"
               onClick={() => escolher(o.id)}
               aria-pressed={ativo}
-              className={`flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 text-center transition active:scale-95 ${
+              className={`flex flex-col items-center gap-1 rounded-2xl border px-1.5 py-3 text-center transition active:scale-95 ${
                 ativo
                   ? "border-coral bg-coral-soft ring-2 ring-coral/40"
                   : "border-line bg-paper"
               }`}
             >
               <span className="text-xl">{o.emoji}</span>
-              <span className="text-xs font-bold leading-tight">
+              <span className="w-full break-words text-[11px] font-bold leading-tight [overflow-wrap:anywhere]">
                 {o.titulo}
               </span>
             </button>
