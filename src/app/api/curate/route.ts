@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { curarFotos } from "@/lib/curate";
-import { checarRateLimit } from "@/lib/ratelimit";
+import { checarRateLimit, rateLimitAtivo } from "@/lib/ratelimit";
 import {
   MAX_FOTOS,
   MIN_FOTOS,
@@ -21,6 +21,16 @@ const MAX_PAYLOAD_BYTES = MAX_PAYLOAD_MB * 1024 * 1024;
 
 function erro(mensagem: string, status: number) {
   return NextResponse.json<ApiError>({ error: mensagem }, { status });
+}
+
+// DIAGNÓSTICO TEMPORÁRIO — confirma se a produção enxerga o KV (sem expor segredos).
+export async function GET() {
+  return NextResponse.json({
+    marker: "diag-1",
+    rateLimitAtivo,
+    kvUrlPresent: Boolean(process.env.KV_REST_API_URL),
+    kvTokenPresent: Boolean(process.env.KV_REST_API_TOKEN),
+  });
 }
 
 export async function POST(req: Request) {
