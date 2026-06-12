@@ -84,3 +84,27 @@ body {
     ),
     radial-gradient(circle at 85% 0%, rgba(244, 183, 64, 0.1), transparent 45%);
 }
+
+/* Coração subindo — deleite na tela de resultado */
+@keyframes heart-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-180px) scale(1.15);
+  }
+}
+
+.dump-heart {
+  position: absolute;
+  bottom: 0;
+  font-size: 1.6rem;
+  animation: heart-rise 2.6s ease-out forwards;
+  will-change: transform, opacity;
+  pointer-events: none;
+}

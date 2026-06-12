@@ -161,6 +161,8 @@ export default function AppPage() {
         <ResultadoDump
           fotos={resultado.fotos}
           justificativa={resultado.justificativa}
+          objetivo={objetivo}
+          totalEnviadas={fotos.length}
           onReset={reiniciar}
         />
       </main>

@@ -1,21 +1,64 @@
 "use client";
 
+import { OBJETIVOS, type ObjetivoId } from "@/lib/types";
+
 interface Props {
   /** URLs (object URLs) das fotos selecionadas, já na ordem escolhida pela IA. */
   fotos: string[];
   justificativa: string;
+  objetivo: ObjetivoId;
+  /** Quantas fotos o usuário enviou (pra mostrar "10 de N"). */
+  totalEnviadas: number;
   onReset: () => void;
 }
 
-export default function ResultadoDump({ fotos, justificativa, onReset }: Props) {
+// Posições/delays fixos (evita hidratação não-determinística).
+const HEARTS = [
+  { e: "❤️", left: "10%", delay: "0s" },
+  { e: "✨", left: "24%", delay: "0.5s" },
+  { e: "❤️", left: "38%", delay: "0.2s" },
+  { e: "💛", left: "52%", delay: "0.8s" },
+  { e: "❤️", left: "66%", delay: "0.35s" },
+  { e: "✨", left: "80%", delay: "0.65s" },
+  { e: "💜", left: "47%", delay: "1.1s" },
+];
+
+export default function ResultadoDump({
+  fotos,
+  justificativa,
+  objetivo,
+  totalEnviadas,
+  onReset,
+}: Props) {
+  const opcao = OBJETIVOS.find((o) => o.id === objetivo) ?? OBJETIVOS[0];
+
   return (
     <div className="animate-fade-up flex flex-1 flex-col px-5 pb-10 pt-2">
-      <div className="text-center">
-        <h1 className="font-display text-2xl font-extrabold tracking-tight">
-          Seu dump tá pronto 🔥
+      {/* Cabeçalho com corações subindo */}
+      <div className="relative overflow-hidden pb-1 pt-2 text-center">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44">
+          {HEARTS.map((h, i) => (
+            <span
+              key={i}
+              className="dump-heart"
+              style={{ left: h.left, animationDelay: h.delay }}
+            >
+              {h.e}
+            </span>
+          ))}
+        </div>
+
+        <span className="relative inline-flex items-center gap-1.5 rounded-full bg-coral-soft px-3 py-1 text-xs font-bold text-coral-ink">
+          🎯 Otimizado pra {opcao.titulo}
+        </span>
+        <h1 className="relative mt-3 font-display text-2xl font-extrabold tracking-tight">
+          Seu dump com mais chance de
+          <br />
+          <span className="text-coral">{opcao.titulo.toLowerCase()}</span> 🔥
         </h1>
-        <p className="mt-1 text-sm text-muted">
-          As {fotos.length} melhores, na ordem certa pro carrossel.
+        <p className="relative mt-1 text-sm text-muted">
+          {fotos.length} selecionadas de {totalEnviadas} — na ordem certa pro
+          carrossel.
         </p>
       </div>
 
@@ -33,7 +76,8 @@ export default function ResultadoDump({ fotos, justificativa, onReset }: Props) 
           {fotos.map((src, i) => (
             <figure
               key={i}
-              className="relative aspect-square w-[78%] shrink-0 snap-center overflow-hidden rounded-3xl border border-line bg-paper-2 shadow-sm"
+              className="animate-pop relative aspect-square w-[78%] shrink-0 snap-center overflow-hidden rounded-3xl border border-line bg-paper-2 shadow-sm"
+              style={{ animationDelay: `${i * 80}ms` }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
