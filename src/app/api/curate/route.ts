@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { curarFotos } from "@/lib/curate";
+import { checarRateLimit } from "@/lib/ratelimit";
 import {
   MAX_FOTOS,
   MIN_FOTOS,
@@ -23,6 +24,20 @@ function erro(mensagem: string, status: number) {
 }
 
 export async function POST(req: Request) {
+  // Rate limit por IP — protege o crédito da Anthropic. Rejeita antes de parsear
+  // o body (barato) e conta toda tentativa, inclusive abuso direto via curl.
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "anon";
+  const limite = await checarRateLimit(ip);
+  if (!limite.ok) {
+    return erro(
+      "Você fez muitas gerações em pouco tempo. Tente de novo daqui a pouco. ⏳",
+      429,
+    );
+  }
+
   // Guarda de tamanho na borda: Base64 infla ~33%, não dá pra deixar estourar memória/timeout.
   const tamanho = Number(req.headers.get("content-length") || 0);
   if (tamanho > MAX_PAYLOAD_BYTES) {
