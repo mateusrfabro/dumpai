@@ -3,6 +3,13 @@ import { marcarPago, revogarPagoPorEmail } from "@/lib/acesso";
 
 export const runtime = "nodejs";
 
+/** Comparação de tempo constante (evita timing attack na assinatura). */
+function comparaSeguro(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
+}
+
 // A Kiwify chama este endpoint quando um pedido muda de status.
 // Validamos a assinatura (HMAC com o token do webhook) antes de confiar no corpo.
 export async function POST(req: Request) {
@@ -22,7 +29,8 @@ export async function POST(req: Request) {
   const sha1 = crypto.createHmac("sha1", token).update(raw).digest("hex");
   const sha256 = crypto.createHmac("sha256", token).update(raw).digest("hex");
   const valido =
-    assinaturaRecebida === sha1 || assinaturaRecebida === sha256;
+    comparaSeguro(assinaturaRecebida, sha1) ||
+    comparaSeguro(assinaturaRecebida, sha256);
 
   if (!valido) {
     return new Response("assinatura inválida", { status: 401 });

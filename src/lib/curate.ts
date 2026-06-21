@@ -10,6 +10,9 @@ import {
   type ResultadoCuradoria,
 } from "./types";
 
+/** Erro com mensagem segura de mostrar ao usuário (a route repassa só estes). */
+export class ErroIA extends Error {}
+
 /** Default barato p/ testar; troque via env ANTHROPIC_MODEL (ver .env.local.example). */
 const MODELO_PADRAO = "claude-haiku-4-5";
 
@@ -98,7 +101,7 @@ export async function curarFotos(
 ): Promise<ResultadoCuradoria> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    throw new Error(
+    throw new ErroIA(
       "Configuração ausente: defina ANTHROPIC_API_KEY no .env.local.",
     );
   }
@@ -106,7 +109,7 @@ export async function curarFotos(
   const fontes: FonteImagem[] = [];
   for (const url of dataUrls) {
     const f = parseDataUrl(url);
-    if (!f) throw new Error("Uma das imagens está em formato não suportado.");
+    if (!f) throw new ErroIA("Uma das imagens está em formato não suportado.");
     fontes.push(f);
   }
 
@@ -141,19 +144,21 @@ export async function curarFotos(
     });
   } catch (err) {
     if (err instanceof Anthropic.AuthenticationError) {
-      throw new Error("Chave da IA inválida. Verifique ANTHROPIC_API_KEY.");
+      throw new ErroIA("Chave da IA inválida. Verifique ANTHROPIC_API_KEY.");
     }
     if (err instanceof Anthropic.RateLimitError) {
-      throw new Error("Muitas requisições agora. Tente de novo em instantes.");
+      throw new ErroIA("Muitas requisições agora. Tente de novo em instantes.");
     }
-    throw new Error("A IA está indisponível no momento. Tente novamente.");
+    // Loga o erro REAL no servidor (sem as imagens) e devolve mensagem genérica.
+    console.error("[curate] erro da Anthropic:", err);
+    throw new ErroIA("A IA está indisponível no momento. Tente novamente.");
   }
 
   let parsed: unknown;
   try {
     parsed = JSON.parse(textoDaResposta(resposta.content));
   } catch {
-    throw new Error("A IA respondeu fora do formato esperado. Tente de novo.");
+    throw new ErroIA("A IA respondeu fora do formato esperado. Tente de novo.");
   }
 
   const obj = parsed as Record<string, unknown>;
@@ -164,7 +169,7 @@ export async function curarFotos(
       : "Essas fotos têm a melhor energia e variedade pro seu dump. ✨";
 
   if (indices.length === 0) {
-    throw new Error("A IA não conseguiu escolher as fotos. Tente outras imagens.");
+    throw new ErroIA("A IA não conseguiu escolher as fotos. Tente outras imagens.");
   }
 
   return { indices, justificativa };

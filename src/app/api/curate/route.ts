@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { curarFotos } from "@/lib/curate";
+import { ErroIA, curarFotos } from "@/lib/curate";
 import { checarRateLimit } from "@/lib/ratelimit";
 import {
   MAX_USOS,
+  confirmarPagamentoAtivo,
   consumirUso,
-  devolverUso,
+  contarUsos,
   emailDoCookie,
   lerCookieAcesso,
   paywallAtivo,
@@ -58,18 +59,34 @@ export async function POST(req: Request) {
   }
   const emailAcesso = paywallAtivo ? emailDoCookie(tokenAcesso) : null;
 
-  // Guarda de tamanho na borda: Base64 infla ~33%, não dá pra deixar estourar memória/timeout.
-  const tamanho = Number(req.headers.get("content-length") || 0);
-  if (tamanho > MAX_PAYLOAD_BYTES) {
+  // Revalida o pagamento a cada geração: reembolso/chargeback (webhook apaga o
+  // registro no KV) bloqueia o acesso mesmo se o cookie ainda for válido.
+  if (emailAcesso && !(await confirmarPagamentoAtivo(emailAcesso))) {
     return erro(
-      `Envio muito grande (limite ${MAX_PAYLOAD_MB}MB). Envie menos fotos.`,
-      413,
+      "Seu acesso não está mais ativo. Em caso de dúvida, fale com o suporte.",
+      401,
     );
+  }
+
+  // Lê o corpo com TETO REAL de bytes (não confia no header content-length, que
+  // pode vir ausente/mentido). Base64 infla ~33%, então cortamos pelo tamanho real.
+  let raw: string;
+  try {
+    const buf = await req.arrayBuffer();
+    if (buf.byteLength > MAX_PAYLOAD_BYTES) {
+      return erro(
+        `Envio muito grande (limite ${MAX_PAYLOAD_MB}MB). Envie menos fotos.`,
+        413,
+      );
+    }
+    raw = Buffer.from(buf).toString("utf8");
+  } catch {
+    return erro("Requisição inválida.", 400);
   }
 
   let body: CuratePayload;
   try {
-    body = (await req.json()) as CuratePayload;
+    body = JSON.parse(raw) as CuratePayload;
   } catch {
     return erro("Requisição inválida.", 400);
   }
@@ -90,26 +107,23 @@ export async function POST(req: Request) {
     ? (body.objetivo as ObjetivoId)
     : OBJETIVO_PADRAO;
 
-  // Limite de gerações por compra (consome 1 uso; devolve se a IA falhar).
-  let restantes = MAX_USOS;
-  if (emailAcesso) {
-    const uso = await consumirUso(emailAcesso);
-    if (!uso.ok) {
-      return erro(
-        `Você já usou suas ${MAX_USOS} gerações desta compra. 💛 Para gerar mais dumps, é só liberar de novo.`,
-        403,
-      );
-    }
-    restantes = uso.restantes;
+  // Limite por compra: checa ANTES (sem consumir) e só consome no SUCESSO da IA —
+  // assim uma falha de infra nunca cobra uma geração que o cliente não recebeu.
+  if (emailAcesso && (await contarUsos(emailAcesso)) >= MAX_USOS) {
+    return erro(
+      `Você já usou suas ${MAX_USOS} gerações desta compra. 💛 Para gerar mais dumps, é só liberar de novo.`,
+      403,
+    );
   }
 
   try {
     const resultado = await curarFotos(images, objetivo);
+    const restantes = emailAcesso ? await consumirUso(emailAcesso) : MAX_USOS;
     return NextResponse.json<ResultadoCuradoria>({ ...resultado, restantes });
   } catch (err) {
-    if (emailAcesso) await devolverUso(emailAcesso); // não cobra uso se a IA falhou
-    const msg =
-      err instanceof Error ? err.message : "Erro inesperado. Tente novamente.";
-    return erro(msg, 502);
+    // Só repassa mensagens seguras (ErroIA); o resto vira genérico + log no server.
+    if (err instanceof ErroIA) return erro(err.message, 502);
+    console.error("[curate] erro inesperado:", err);
+    return erro("Erro inesperado. Tente novamente.", 500);
   }
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checarRateLimit } from "@/lib/ratelimit";
 import {
   COOKIE_NAME,
   assinarAcesso,
@@ -13,6 +14,20 @@ const MAX_AGE = 180 * 24 * 60 * 60;
 // Recebe { email } ou { orderId } e, se houver pagamento confirmado no KV,
 // devolve um cookie de acesso assinado (HttpOnly).
 export async function POST(req: Request) {
+  // Rate limit por IP — impede força bruta/enumeração de e-mails pagos.
+  // Bucket separado do /curate (prefixo "claim:" no id).
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "anon";
+  const limite = await checarRateLimit(`claim:${ip}`);
+  if (!limite.ok) {
+    return NextResponse.json(
+      { error: "Muitas tentativas. Tente de novo daqui a pouco." },
+      { status: 429 },
+    );
+  }
+
   let body: { email?: string; orderId?: string };
   try {
     body = (await req.json()) as { email?: string; orderId?: string };

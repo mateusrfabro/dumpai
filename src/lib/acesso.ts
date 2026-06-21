@@ -48,6 +48,17 @@ export async function estaPagoEmail(email: string): Promise<boolean> {
   return Boolean(await r.get(`pago:email:${normEmail(email)}`));
 }
 
+/**
+ * Confirma que o pagamento AINDA está ativo (não reembolsado/chargeback).
+ * Usado a cada geração — assim revogar no webhook tem efeito mesmo com cookie válido.
+ * Fail-open se o KV cair (não derruba pagante legítimo numa instabilidade).
+ */
+export async function confirmarPagamentoAtivo(email: string): Promise<boolean> {
+  const r = redis();
+  if (!r || !email) return true;
+  return Boolean(await r.get(`pago:email:${normEmail(email)}`));
+}
+
 /** Retorna o e-mail pago associado a um order_id (ou null). */
 export async function emailDoPedido(orderId: string): Promise<string | null> {
   const r = redis();
@@ -94,30 +105,25 @@ export function emailDoCookie(token: string | undefined): string | null {
 
 // ── Limite de gerações por compra (KV) ──────────────────────────────────────
 
-/**
- * Consome 1 geração do e-mail. Retorna { ok:false } se já esgotou o limite.
- * Sem KV (dev), não limita.
- */
-export async function consumirUso(
-  email: string,
-): Promise<{ ok: boolean; restantes: number }> {
+/** Quantas gerações o e-mail já consumiu (0 se nenhuma / sem KV). */
+export async function contarUsos(email: string): Promise<number> {
   const r = redis();
-  if (!r || !email) return { ok: true, restantes: MAX_USOS };
+  if (!r || !email) return 0;
+  const n = await r.get<number>(`usos:email:${normEmail(email)}`);
+  return typeof n === "number" ? n : Number(n) || 0;
+}
+
+/**
+ * Consome 1 geração do e-mail. Chamar SÓ APÓS o sucesso da IA — assim uma falha
+ * de infra nunca cobra uma geração que o cliente não recebeu. Retorna as restantes.
+ */
+export async function consumirUso(email: string): Promise<number> {
+  const r = redis();
+  if (!r || !email) return MAX_USOS;
   const key = `usos:email:${normEmail(email)}`;
   const n = await r.incr(key);
   if (n === 1) await r.expire(key, TTL_SEG);
-  if (n > MAX_USOS) {
-    await r.decr(key); // desfaz: mantém travado no máximo
-    return { ok: false, restantes: 0 };
-  }
-  return { ok: true, restantes: MAX_USOS - n };
-}
-
-/** Devolve 1 geração (ex: a IA falhou — não cobra o uso). */
-export async function devolverUso(email: string): Promise<void> {
-  const r = redis();
-  if (!r || !email) return;
-  await r.decr(`usos:email:${normEmail(email)}`);
+  return Math.max(0, MAX_USOS - n);
 }
 
 /** Lê o cookie de acesso do header Cookie de uma Request. */
