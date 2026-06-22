@@ -67,8 +67,8 @@ export default function QuizObjetivo({ onSelect, variante = "app" }: Props) {
               }`}
             >
               <span className="text-xl">{o.emoji}</span>
-              <span className="w-full break-words text-[11px] font-bold leading-tight [overflow-wrap:anywhere]">
-                {o.titulo}
+              <span className="w-full break-words text-[11px] font-bold leading-tight">
+                {o.chip}
               </span>
             </button>
           );

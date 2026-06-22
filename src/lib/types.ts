@@ -27,6 +27,8 @@ export interface ObjetivoOpcao {
   id: ObjetivoId;
   emoji: string;
   titulo: string;
+  /** Rótulo curto pro chip (cabe na box do mobile); o `titulo` completo fica no resultado. */
+  chip: string;
   /** Dica injetada no prompt da IA para priorizar as fotos certas. */
   hintIA: string;
 }
@@ -36,6 +38,7 @@ export const OBJETIVOS: ObjetivoOpcao[] = [
     id: "curtidas",
     emoji: "❤️",
     titulo: "+ Curtidas",
+    chip: "+ Curtidas",
     hintIA:
       "fotos esteticamente fortes e 'instagramáveis' — boa luz, enquadramento, cores e pessoas bonitas/carismáticas na imagem",
   },
@@ -43,6 +46,7 @@ export const OBJETIVOS: ObjetivoOpcao[] = [
     id: "comentarios",
     emoji: "💬",
     titulo: "+ Comentários",
+    chip: "+ Comentários",
     hintIA:
       "fotos que provocam conversa — expressões marcantes, situações engraçadas ou inusitadas, gente interagindo e reações espontâneas",
   },
@@ -50,6 +54,7 @@ export const OBJETIVOS: ObjetivoOpcao[] = [
     id: "compartilhamentos",
     emoji: "🔁",
     titulo: "+ Compartilhamentos",
+    chip: "+ Compartilhar",
     hintIA:
       "fotos marcantes e relacionáveis — momentos icônicos, emoção ou humor que dão vontade de mostrar pros amigos e repostar",
   },
