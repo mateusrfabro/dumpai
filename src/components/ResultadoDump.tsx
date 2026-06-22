@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { OBJETIVOS, type ObjetivoId } from "@/lib/types";
 
 interface Props {
@@ -25,6 +26,9 @@ const HEARTS = [
   { e: "💜", left: "47%", delay: "1.1s" },
 ];
 
+const nomeArquivo = (i: number) => `dump-${String(i + 1).padStart(2, "0")}.jpg`;
+
+/** Download direto (funciona em desktop/Android; no iOS o navegador costuma abrir a imagem). */
 function baixar(src: string, nome: string) {
   const a = document.createElement("a");
   a.href = src;
@@ -44,14 +48,51 @@ export default function ResultadoDump({
 }: Props) {
   const opcao = OBJETIVOS.find((o) => o.id === objetivo) ?? OBJETIVOS[0];
 
-  const nomeArquivo = (i: number) =>
-    `dump-${String(i + 1).padStart(2, "0")}.jpg`;
+  // Pré-converte as fotos em File[] (pra usar o Web Share API sem perder o gesto
+  // do usuário — no iPhone isso abre "Salvar X Imagens em Fotos").
+  const [arquivos, setArquivos] = useState<File[]>([]);
+  useEffect(() => {
+    let vivo = true;
+    Promise.all(
+      fotos.map(async (url, i) => {
+        const blob = await (await fetch(url)).blob();
+        return new File([blob], nomeArquivo(i), {
+          type: blob.type || "image/jpeg",
+        });
+      }),
+    )
+      .then((fs) => vivo && setArquivos(fs))
+      .catch(() => {});
+    return () => {
+      vivo = false;
+    };
+  }, [fotos]);
 
-  function baixarTodas() {
-    fotos.forEach((src, i) =>
-      setTimeout(() => baixar(src, nomeArquivo(i)), i * 350),
+  function podeCompartilhar(files: File[]): boolean {
+    return (
+      typeof navigator !== "undefined" &&
+      !!navigator.canShare &&
+      navigator.canShare({ files })
     );
   }
+
+  async function salvar(files: File[], urls: string[]) {
+    // iPhone/mobile: share sheet com "Salvar em Fotos".
+    if (files.length && podeCompartilhar(files)) {
+      try {
+        await navigator.share({ files, title: "Meu Photo Dump 🔥" });
+        return;
+      } catch {
+        // usuário cancelou ou não rolou — cai no download.
+      }
+    }
+    // Desktop/Android: baixa cada uma.
+    urls.forEach((u, i) =>
+      setTimeout(() => baixar(u, nomeArquivo(i)), i * 250),
+    );
+  }
+
+  const salvarTodas = () => salvar(arquivos, fotos);
 
   return (
     <div className="animate-fade-up flex flex-1 flex-col px-5 pb-10 pt-2">
@@ -110,8 +151,8 @@ export default function ResultadoDump({
                 {i + 1}/{fotos.length}
               </figcaption>
               <button
-                onClick={() => baixar(src, nomeArquivo(i))}
-                aria-label={`Baixar foto ${i + 1}`}
+                onClick={() => salvar(arquivos[i] ? [arquivos[i]] : [], [src])}
+                aria-label={`Salvar foto ${i + 1}`}
                 className="absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-ink/85 text-paper backdrop-blur transition active:scale-90"
               >
                 ⬇
@@ -129,8 +170,8 @@ export default function ResultadoDump({
         <div className="font-display font-bold">📲 Como postar seu dump</div>
         <ol className="mt-1 list-decimal space-y-0.5 pl-5 text-muted">
           <li>
-            <strong className="text-ink">Salve as fotos</strong> (botão ⬇ em
-            cada uma, ou toque e segure → Salvar no iPhone).
+            Toque em <strong className="text-ink">Salvar as {fotos.length}{" "}
+            fotos</strong> (no iPhone, escolha “Salvar em Fotos”).
           </li>
           <li>
             No Instagram, crie um carrossel e selecione na ordem{" "}
@@ -141,10 +182,10 @@ export default function ResultadoDump({
 
       <div className="mt-auto space-y-3 pt-6">
         <button
-          onClick={baixarTodas}
+          onClick={salvarTodas}
           className="w-full rounded-2xl bg-coral px-6 py-4 font-display text-base font-extrabold text-paper shadow-[0_10px_30px_-8px_rgba(255,84,54,0.7)] transition active:scale-[0.98]"
         >
-          ⬇ Baixar todas em ordem
+          ⬇ Salvar as {fotos.length} fotos
         </button>
         <button
           onClick={onReset}

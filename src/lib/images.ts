@@ -52,19 +52,24 @@ export async function comprimirImagem(file: File): Promise<string> {
   }
 }
 
-/** Comprime várias imagens em paralelo, reportando progresso (0–1). */
+/**
+ * Comprime várias imagens em LOTES, cedendo o thread entre cada lote pra a UI
+ * não congelar (com 30 fotos, fazer tudo de uma vez trava a tela). Reporta progresso.
+ */
 export async function comprimirVarias(
   files: File[],
   onProgresso?: (feitas: number, total: number) => void,
 ): Promise<string[]> {
   const total = files.length;
-  let feitas = 0;
-  return Promise.all(
-    files.map(async (file) => {
-      const out = await comprimirImagem(file);
-      feitas += 1;
-      onProgresso?.(feitas, total);
-      return out;
-    }),
-  );
+  const LOTE = 4;
+  const saida: string[] = [];
+  for (let i = 0; i < total; i += LOTE) {
+    const lote = files.slice(i, i + LOTE);
+    const res = await Promise.all(lote.map((f) => comprimirImagem(f)));
+    saida.push(...res);
+    onProgresso?.(saida.length, total);
+    // Cede o thread: deixa o navegador pintar o progresso/animação antes do próximo lote.
+    await new Promise((r) => setTimeout(r, 0));
+  }
+  return saida;
 }

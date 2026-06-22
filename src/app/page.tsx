@@ -138,6 +138,25 @@ export default function LandingPage() {
               Entrar com seu e-mail
             </Link>
           </p>
+
+          {/* Sinais de confiança (honestos) */}
+          <div className="mt-5 grid grid-cols-3 gap-2 text-center">
+            {[
+              ["🛡️", "7 dias de garantia"],
+              ["🔒", "Pix seguro (Kiwify)"],
+              ["✨", "IA da Anthropic"],
+            ].map(([emoji, label]) => (
+              <div
+                key={label}
+                className="rounded-2xl border border-line bg-paper px-2 py-3"
+              >
+                <div className="text-lg">{emoji}</div>
+                <div className="mt-1 text-[11px] font-semibold leading-tight">
+                  {label}
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Como funciona */}
@@ -172,6 +191,16 @@ export default function LandingPage() {
           DumpAI © {new Date().getFullYear()} — feito pra quem tem foto demais e
           paciência de menos.
         </footer>
+      </div>
+
+      {/* CTA fixo no rodapé (sempre visível — converte muito mais no mobile) */}
+      <div className="sticky bottom-0 z-10 border-t border-line bg-paper/90 px-5 py-3 backdrop-blur">
+        <Link
+          href={PAYMENT_LINK}
+          className="mx-auto flex w-full max-w-md items-center justify-center gap-2 rounded-2xl bg-coral px-6 py-3.5 text-center font-display text-base font-extrabold text-paper shadow-[0_8px_24px_-8px_rgba(255,84,54,0.7)] transition active:scale-[0.98]"
+        >
+          Liberar IA — R$ 19,90 no Pix
+        </Link>
       </div>
     </main>
   );

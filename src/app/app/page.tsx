@@ -33,6 +33,10 @@ export default function AppPage() {
     restantes?: number;
   } | null>(null);
   const [objetivo, setObjetivo] = useState<ObjetivoId>(OBJETIVO_PADRAO);
+  // Progresso da compressão das fotos (antes de chamar a IA).
+  const [prep, setPrep] = useState<{ feitas: number; total: number } | null>(
+    null,
+  );
   // Paywall: quando a IA responde 401, pedimos o e-mail da compra pra liberar.
   const [claimNecessario, setClaimNecessario] = useState(false);
   const [claimEmail, setClaimEmail] = useState("");
@@ -111,8 +115,13 @@ export default function AppPage() {
     }
     setErro(null);
     setEstado("carregando");
+    setPrep({ feitas: 0, total: fotos.length });
     try {
-      const images = await comprimirVarias(fotos.map((f) => f.file));
+      const images = await comprimirVarias(
+        fotos.map((f) => f.file),
+        (feitas, total) => setPrep({ feitas, total }),
+      );
+      setPrep(null);
       const resp = await fetch("/api/curate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,6 +157,7 @@ export default function AppPage() {
       });
       setEstado("resultado");
     } catch (e) {
+      setPrep(null);
       setErro(e instanceof Error ? e.message : "Erro inesperado.");
       setEstado("upload");
     }
@@ -198,7 +208,28 @@ export default function AppPage() {
   if (estado === "carregando") {
     return (
       <main className="flex flex-1 flex-col">
-        <LoadingDump />
+        {prep ? (
+          <div className="grid flex-1 place-items-center px-6 text-center">
+            <div className="w-full max-w-xs">
+              <p className="font-display text-lg font-bold">
+                Preparando suas fotos…
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                {prep.feitas} de {prep.total}
+              </p>
+              <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-line">
+                <div
+                  className="h-full rounded-full bg-coral transition-all"
+                  style={{
+                    width: `${Math.round((prep.feitas / Math.max(1, prep.total)) * 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <LoadingDump />
+        )}
       </main>
     );
   }
