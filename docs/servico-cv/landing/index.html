@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+  ============================================================================
+  CV APROVADO — Landing page de tráfego pago (estática, self-contained).
+  Abre só clicando no arquivo. Deployável em qualquer host na hora.
+
+  ANTES DE SUBIR, PREENCHA OS PLACEHOLDERS:
+    1. [LINK_CHECKOUT_KIWIFY]  -> trocar TODAS as ocorrências (Ctrl+H).
+       Estão nos botões com  data-evento="checkout".
+       Há 2 variantes de checkout (R$79 e R$149): veja data-pacote="cv" / "cv-linkedin".
+    2. https://wa.me/5543991946703            -> link do WhatsApp (https://wa.me/55DDDNUMERO).
+       Botões com  data-evento="whatsapp".
+    3. PIXEL META / GTAG       -> colar o snippet no <head> onde está o comentário
+       <!-- PIXEL META / GTAG AQUI -->. Os botões já têm data-attributes pro
+       gestor plugar o evento (data-evento, data-pacote, data-valor).
+
+  TROCAR O NOME DO PRODUTO:
+    O nome "CV Aprovado" está centralizado na variável CSS  --brand-name  NÃO
+    (CSS não injeta texto em massa) — então o nome aparece como texto. Para
+    renomear: Ctrl+H em "CV Aprovado" e no <title>/og. Marcado com BRAND-NAME
+    nos pontos principais (logo, title, footer).
+
+  HONESTIDADE: a página promete o benefício REAL — passar na triagem (ATS),
+  ser chamado, destacar a experiência real — mas NÃO promete emprego/entrevista
+  GARANTIDOS. Promessa = CV legível/forte pro ATS e pro recrutador, reescrevendo
+  o que já é real. Risco-reverso = revisão incluída até o cliente ficar satisfeito.
+  ============================================================================
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CV Aprovado — Saia da pilha de descartados em 24h</title><!-- BRAND-NAME -->
+  <meta name="description" content="Seu currículo reescrito pra passar na triagem automática (ATS) que descarta a maioria — e ser chamado pra entrevista. Entrega em 24h. Humano + IA. Sua experiência real, finalmente vendida do jeito certo." />
+
+  <!-- Open Graph (compartilhamento / preview do anúncio) -->
+  <meta property="og:title" content="CV Aprovado — Saia da pilha de descartados em 24h" /><!-- BRAND-NAME -->
+  <meta property="og:description" content="A maioria dos currículos morre na triagem automática antes de um humano ler. A gente reescreve o seu pra passar no filtro e ser chamado. Entrega em 24h, humano + IA." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#16233a" />
+
+  <!-- ===================== PIXEL META / GTAG AQUI ===================== -->
+  <!--
+    Cole aqui o Meta Pixel base code e/ou o Google Tag (gtag.js).
+    Os CTAs de compra disparam, no clique, com estes data-attributes:
+        data-evento="checkout"  data-pacote="cv"|"cv-linkedin"  data-valor="79"|"149"
+    Os CTAs de WhatsApp:
+        data-evento="whatsapp"
+    Exemplo de bridge (descomente e adapte ao seu pixel):
+    <script>
+      document.addEventListener('click', function (e) {
+        var el = e.target.closest('[data-evento]');
+        if (!el) return;
+        var ev = el.getAttribute('data-evento');
+        // if (window.fbq) fbq('track', ev === 'checkout' ? 'InitiateCheckout' : 'Contact',
+        //   { value: Number(el.dataset.valor || 0), currency: 'BRL', content_name: el.dataset.pacote });
+        // if (window.gtag) gtag('event', ev, { value: Number(el.dataset.valor || 0) });
+      }, true);
+    </script>
+  -->
+  <!-- ================================================================= -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Paleta: papel/tinta de mesa de recrutador + carimbo âmbar "aprovado" */
+      --ink:        #16233a;   /* navy tinta */
+      --ink-soft:   #3a4a63;
+      --paper:      #f6f1e7;   /* papel creme */
+      --paper-2:    #efe7d6;
+      --paper-card: #fffdf8;
+      --amber:      #d9842b;   /* carimbo / accent */
+      --amber-deep: #b8651a;
+      --pass:       #2f7d52;   /* verde "passou no filtro" */
+      --pass-soft:  #e3f0e7;
+      --line:       #d9cfba;
+      --line-strong:#c4b79b;
+      --shadow:     22px 24px 0 rgba(22,35,58,.06);
+      --maxw: 1120px;
+      --r: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(circle at 12% -5%, rgba(217,132,43,.10), transparent 40%),
+        radial-gradient(circle at 92% 8%, rgba(22,35,58,.06), transparent 42%);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: .1px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    /* textura de grão sutil sobre o papel */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; position: relative; z-index: 1; }
+
+    h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.04; letter-spacing: -.5px; margin: 0; }
+    p { margin: 0 0 1em; }
+    a { color: inherit; }
+    .mono { font-family: "Spline Sans Mono", ui-monospace, monospace; letter-spacing: 0; }
+
+    /* ---------- Eyebrow / badges ---------- */
+    .eyebrow {
+      font-family: "Spline Sans Mono", monospace;
+      font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--amber-deep);
+      display: inline-flex; align-items: center; gap: 9px;
+    }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--amber); display: inline-block; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: "Spline Sans Mono", monospace; font-size: 12.5px; font-weight: 500;
+      letter-spacing: .3px;
+      padding: 7px 13px; border-radius: 999px;
+      border: 1.5px solid var(--line-strong);
+      background: var(--paper-card);
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pass); box-shadow: 0 0 0 3px var(--pass-soft); }
+    .pill.amber .dot { background: var(--amber); box-shadow: 0 0 0 3px rgba(217,132,43,.18); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      --bg: var(--ink); --fg: var(--paper);
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: "Spline Sans Mono", monospace; font-weight: 600; font-size: 15.5px;
+      letter-spacing: .2px;
+      padding: 16px 26px; border-radius: 14px;
+      background: var(--bg); color: var(--fg);
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 2px 0 var(--ink), 0 10px 22px rgba(22,35,58,.18);
+      transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 0 var(--ink), 0 16px 30px rgba(22,35,58,.22); }
+    .btn:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--ink), 0 6px 14px rgba(22,35,58,.2); }
+    .btn--amber { --bg: var(--amber); box-shadow: 0 2px 0 var(--amber-deep), 0 10px 22px rgba(217,132,43,.28); }
+    .btn--amber:hover { box-shadow: 0 4px 0 var(--amber-deep), 0 16px 30px rgba(217,132,43,.34); }
+    .btn--amber:active { box-shadow: 0 1px 0 var(--amber-deep), 0 6px 14px rgba(217,132,43,.3); }
+    .btn--ghost {
+      --bg: transparent; --fg: var(--ink);
+      border: 1.6px solid var(--ink); box-shadow: none;
+    }
+    .btn--ghost:hover { background: rgba(22,35,58,.05); box-shadow: none; transform: translateY(-2px); }
+    .btn--block { width: 100%; }
+    .btn svg { flex: none; }
+
+    /* ---------- Header ---------- */
+    header.site {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: rgba(246,241,231,.82);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--ink); color: var(--amber);
+      display: grid; place-items: center;
+      font-family: "Fraunces", serif; font-weight: 900; font-size: 20px;
+      box-shadow: inset 0 0 0 2px rgba(217,132,43,.35);
+    }
+    .logo-name { font-family: "Fraunces", serif; font-weight: 600; font-size: 19px; letter-spacing: -.3px; }
+    .logo-name b { color: var(--amber-deep); font-weight: 600; }
+    .nav-cta { display: none; }
+    @media (min-width: 720px){ .nav-cta { display: inline-flex; padding: 11px 18px; font-size: 14px; } }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 40px 0 16px; }
+    .hero-grid { display: grid; gap: 34px; }
+    .hero h1 {
+      font-size: clamp(38px, 9.5vw, 70px);
+      margin: 16px 0 0;
+    }
+    .hero h1 .mark {
+      position: relative; white-space: nowrap; color: var(--ink);
+    }
+    /* "carimbo" sob a palavra-chave */
+    .hero h1 .mark::after {
+      content: ""; position: absolute; left: -4px; right: -4px; bottom: 6%;
+      height: .42em; background: rgba(217,132,43,.32);
+      transform: rotate(-1.2deg); z-index: -1; border-radius: 3px;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 4.6vw, 20px); color: var(--ink-soft);
+      max-width: 33ch; margin-top: 20px;
+    }
+    .hero-cta { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
+    .hero-trust {
+      display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px;
+    }
+    .hero-note {
+      margin-top: 18px; font-size: 14.5px; color: var(--ink-soft);
+      display: flex; align-items: flex-start; gap: 8px; max-width: 40ch;
+    }
+    .hero-note svg { flex: none; margin-top: 3px; }
+
+    /* Hero visual: documento com selo PASS */
+    .doc {
+      position: relative;
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 22px 22px 24px;
+      transform: rotate(-1.1deg);
+    }
+    .doc::before {
+      content: ""; position: absolute; inset: 9px; border: 1px dashed var(--line-strong);
+      border-radius: 12px; pointer-events: none;
+    }
+    .doc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .doc-dots { display: flex; gap: 6px; }
+    .doc-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); display: inline-block; }
+    .doc-file { font-family: "Spline Sans Mono", monospace; font-size: 11.5px; color: var(--ink-soft); letter-spacing: .3px; }
+    .doc-line { height: 9px; border-radius: 5px; background: var(--paper-2); margin: 11px 2px; }
+    .doc-line.k { background: linear-gradient(90deg, rgba(217,132,43,.34), rgba(217,132,43,.34)) ; position: relative; }
+    .doc-line.w1 { width: 86%; } .doc-line.w2 { width: 96%; } .doc-line.w3 { width: 72%; }
+    .doc-line.w4 { width: 90%; } .doc-line.w5 { width: 64%; }
+    .doc-line.head { height: 14px; width: 52%; background: var(--ink); opacity: .9; margin-bottom: 16px; }
+    .doc-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: "Spline Sans Mono", monospace; font-size: 11px; font-weight: 600;
+      color: var(--pass); background: var(--pass-soft);
+      padding: 4px 9px; border-radius: 6px; margin: 4px 4px 0 2px;
+      letter-spacing: .3px;
+    }
+    .stamp {
+      position: absolute; right: -14px; top: -16px;
+      width: 116px; height: 116px; border-radius: 50%;
+      display: grid; place-items: center; text-align: center;
+      color: var(--pass);
+      border: 3px solid var(--pass);
+      background: rgba(227,240,231,.62);
+      transform: rotate(-13deg);
+      box-shadow: 0 8px 18px rgba(47,125,82,.18);
+      font-family: "Fraunces", serif;
+    }
+    .stamp b { display: block; font-size: 24px; font-weight: 900; line-height: 1; letter-spacing: .5px; }
+    .stamp span { font-family: "Spline Sans Mono", monospace; font-size: 8.5px; letter-spacing: 1.6px; margin-top: 4px; }
+    .stamp::before { content:""; position:absolute; inset:6px; border:1.5px solid rgba(47,125,82,.45); border-radius:50%; }
+
+    @media (min-width: 880px){
+      .hero { padding: 64px 0 24px; }
+      .hero-grid { grid-template-columns: 1.05fr .95fr; align-items: center; }
+      .hero-cta { flex-direction: row; flex-wrap: wrap; }
+      .hero-sub, .hero-note { max-width: 38ch; }
+      .doc { padding: 30px 30px 32px; }
+      .stamp { width: 132px; height: 132px; right: -22px; top: -24px; }
+      .stamp b { font-size: 27px; }
+    }
+
+    /* ---------- Section scaffolding ---------- */
+    section { position: relative; z-index: 1; }
+    .sec { padding: 56px 0; }
+    .sec-head { max-width: 56ch; margin-bottom: 30px; }
+    .sec-head h2 { font-size: clamp(28px, 6.5vw, 42px); margin-top: 12px; }
+    .sec-head p { color: var(--ink-soft); margin-top: 14px; font-size: 17.5px; }
+
+    .rule { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+    /* ---------- Marquee de problema (ATS) ---------- */
+    .strip {
+      background: var(--ink); color: var(--paper);
+      overflow: hidden; white-space: nowrap;
+      border-top: 1px solid #0e1830; border-bottom: 1px solid #0e1830;
+    }
+    .strip-track {
+      display: inline-flex; align-items: center; gap: 0;
+      padding: 13px 0;
+      animation: slide 28s linear infinite;
+      will-change: transform;
+    }
+    .strip-track span {
+      font-family: "Spline Sans Mono", monospace; font-size: 13px; letter-spacing: 1px;
+      text-transform: uppercase; padding: 0 26px; color: rgba(246,241,231,.85);
+    }
+    .strip-track span::before { content: "✕"; color: var(--amber); margin-right: 12px; }
+    @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce){ .strip-track { animation: none; } }
+
+    /* ---------- Antes / Depois ---------- */
+    .ba-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .ba-card + .ba-card { margin-top: 22px; }
+    .ba-head {
+      padding: 16px 20px; border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .ba-head .role { font-family: "Fraunces", serif; font-weight: 600; font-size: 18px; }
+    .ba-head .ex {
+      font-family: "Spline Sans Mono", monospace; font-size: 10.5px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--amber-deep);
+      border: 1px solid var(--line-strong); padding: 3px 8px; border-radius: 6px; margin-left: auto;
+    }
+    .ba-cols { display: grid; }
+    .ba-col { padding: 20px; }
+    .ba-col.before { background: #faf4ea; }
+    .ba-col.after { background: var(--pass-soft); }
+    .ba-col .tag {
+      font-family: "Spline Sans Mono", monospace; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 12px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .ba-col.before .tag { color: #a6492f; }
+    .ba-col.after .tag { color: var(--pass); }
+    .ba-col .tag::before {
+      content: ""; width: 8px; height: 8px; border-radius: 2px;
+    }
+    .ba-col.before .tag::before { background: #c9603f; }
+    .ba-col.after .tag::before { background: var(--pass); }
+    .ba-col q { quotes: none; font-style: italic; color: var(--ink); font-size: 16.5px; display: block; }
+    .ba-col.before q { color: #6a5a48; }
+    .ba-arrow { display: grid; place-items: center; padding: 6px 0; color: var(--amber); background: var(--paper-2); }
+    .ba-arrow svg { transform: rotate(90deg); }
+    .ba-foot {
+      padding: 16px 20px; border-top: 1px solid var(--line);
+      font-size: 15px; color: var(--ink-soft);
+    }
+    .ba-foot b { color: var(--ink); font-weight: 600; }
+    .kw { background: rgba(217,132,43,.22); border-radius: 4px; padding: 0 4px; font-style: normal; color: var(--ink); }
+    @media (min-width: 760px){
+      .ba-cols { grid-template-columns: 1fr 1fr; }
+      .ba-arrow { background: transparent; padding: 0; }
+      .ba-arrow svg { transform: rotate(0deg); }
+      .ba-col.before { border-right: 1px solid var(--line); }
+    }
+
+    /* ---------- Como funciona (3 passos) ---------- */
+    .steps { display: grid; gap: 18px; }
+    .step {
+      position: relative; background: var(--paper-card);
+      border: 1px solid var(--line); border-radius: var(--r);
+      padding: 26px 22px 22px; box-shadow: var(--shadow);
+    }
+    .step-n {
+      font-family: "Fraunces", serif; font-weight: 900; font-size: 46px;
+      color: var(--amber); line-height: 1; opacity: .9;
+      display: block; margin-bottom: 8px;
+    }
+    .step h3 { font-size: 22px; margin-bottom: 8px; }
+    .step p { color: var(--ink-soft); font-size: 16px; margin: 0; }
+    @media (min-width: 760px){ .steps { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ---------- Pacotes ---------- */
+    .plans { display: grid; gap: 22px; }
+    .plan {
+      position: relative; background: var(--paper-card);
+      border: 1.5px solid var(--line-strong); border-radius: 22px;
+      padding: 28px 24px 26px; box-shadow: var(--shadow);
+      display: flex; flex-direction: column;
+    }
+    .plan.feat { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink), 22px 24px 0 rgba(22,35,58,.07); }
+    .plan-flag {
+      position: absolute; top: -13px; left: 24px;
+      background: var(--amber); color: #fff;
+      font-family: "Spline Sans Mono", monospace; font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 8px;
+      box-shadow: 0 6px 14px rgba(217,132,43,.3);
+    }
+    .plan-name { font-family: "Spline Sans Mono", monospace; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); }
+    .plan-price { font-family: "Fraunces", serif; font-weight: 700; font-size: 52px; line-height: 1; margin: 10px 0 4px; letter-spacing: -1px; }
+    .plan-price small { font-size: 22px; font-weight: 500; }
+    .plan-price .cents { font-size: 24px; vertical-align: top; }
+    .plan-tagline { color: var(--ink-soft); font-size: 15.5px; min-height: 2.4em; margin-bottom: 6px; }
+    .plan ul { list-style: none; padding: 0; margin: 16px 0 22px; display: grid; gap: 11px; }
+    .plan li { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; }
+    .plan li svg { flex: none; margin-top: 3px; color: var(--pass); }
+    .plan li.off { color: #9c8d77; }
+    .plan li.off svg { color: #c0b193; }
+    .plan .btn { margin-top: auto; }
+    .bump {
+      margin-top: 22px; background: var(--paper-2);
+      border: 1px dashed var(--line-strong); border-radius: 14px;
+      padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+    }
+    .bump .ic { width: 38px; height: 38px; border-radius: 10px; background: var(--ink); color: var(--amber); display: grid; place-items: center; flex: none; }
+    .bump b { font-family: "Fraunces", serif; }
+    .bump small { display: block; color: var(--ink-soft); font-size: 14px; margin-top: 2px; }
+    .bump .price { margin-left: auto; font-family: "Spline Sans Mono", monospace; font-weight: 600; color: var(--amber-deep); white-space: nowrap; }
+    @media (min-width: 820px){ .plans { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+
+    /* ---------- Garantia / objeções ---------- */
+    .guarantee {
+      background: var(--ink); color: var(--paper);
+      border-radius: 24px; padding: 38px 26px;
+      position: relative; overflow: hidden;
+    }
+    .guarantee::after {
+      content: ""; position: absolute; right: -60px; top: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      border: 2px dashed rgba(217,132,43,.4);
+    }
+    .guarantee .eyebrow { color: var(--amber); }
+    .guarantee h2 { color: var(--paper); font-size: clamp(26px, 6vw, 38px); margin-top: 12px; }
+    .guarantee p { color: rgba(246,241,231,.8); margin-top: 16px; max-width: 54ch; }
+    .obj { display: grid; gap: 14px; margin-top: 26px; }
+    .obj-item { display: flex; gap: 13px; align-items: flex-start; }
+    .obj-item .ic {
+      flex: none; width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(217,132,43,.16); color: var(--amber);
+      display: grid; place-items: center; margin-top: 2px;
+    }
+    .obj-item p { margin: 0; color: rgba(246,241,231,.92); font-size: 16px; }
+    .obj-item p b { color: #fff; font-weight: 600; }
+    @media (min-width: 760px){ .obj { grid-template-columns: 1fr 1fr; gap: 20px 28px; } .guarantee { padding: 48px 44px; } }
+
+    /* ---------- FAQ ---------- */
+    .faq { display: grid; gap: 12px; }
+    details {
+      background: var(--paper-card); border: 1px solid var(--line);
+      border-radius: 14px; padding: 4px 4px;
+      transition: border-color .15s ease;
+    }
+    details[open] { border-color: var(--line-strong); }
+    summary {
+      cursor: pointer; list-style: none; padding: 18px 20px;
+      font-family: "Fraunces", serif; font-weight: 600; font-size: 18.5px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary .plus {
+      flex: none; width: 26px; height: 26px; border-radius: 7px;
+      border: 1.5px solid var(--line-strong); position: relative;
+      transition: transform .2s ease, background .2s ease;
+    }
+    summary .plus::before, summary .plus::after {
+      content: ""; position: absolute; background: var(--ink);
+      left: 50%; top: 50%; transform: translate(-50%,-50%);
+    }
+    summary .plus::before { width: 11px; height: 2px; }
+    summary .plus::after { width: 2px; height: 11px; transition: transform .2s ease; }
+    details[open] summary .plus { background: var(--amber); border-color: var(--amber); transform: rotate(90deg); }
+    details[open] summary .plus::before, details[open] summary .plus::after { background: #fff; }
+    details[open] summary .plus::after { transform: translate(-50%,-50%) scaleY(0); }
+    .faq-a { padding: 0 20px 20px; color: var(--ink-soft); font-size: 16.5px; }
+    .faq-a b { color: var(--ink); }
+
+    /* ---------- CTA final ---------- */
+    .final {
+      text-align: center; padding: 64px 0 40px;
+    }
+    .final h2 { font-size: clamp(30px, 7.5vw, 52px); max-width: 18ch; margin: 14px auto 0; }
+    .final p { color: var(--ink-soft); max-width: 46ch; margin: 18px auto 0; }
+    .final-cta { display: flex; flex-direction: column; gap: 12px; max-width: 460px; margin: 30px auto 0; }
+    @media (min-width: 620px){ .final-cta { flex-direction: row; justify-content: center; } .final-cta .btn { flex: 1; } }
+    .final-trust { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; }
+
+    /* ---------- Honestidade ---------- */
+    .honest {
+      max-width: 70ch; margin: 0 auto; text-align: center;
+      font-size: 14.5px; color: var(--ink-soft); line-height: 1.65;
+      border-top: 1px solid var(--line); padding-top: 26px; margin-top: 20px;
+    }
+    .honest b { color: var(--ink); }
+
+    /* ---------- Footer ---------- */
+    footer.site { padding: 34px 0 40px; border-top: 1px solid var(--line); margin-top: 10px; }
+    .foot-grid { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .foot-grid .logo-name { font-size: 17px; }
+    footer small { color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
+    @media (min-width: 720px){ .foot-grid { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+    /* ---------- Sticky mobile CTA ---------- */
+    .sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      background: rgba(246,241,231,.94); backdrop-filter: blur(8px);
+      border-top: 1px solid var(--line);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      display: flex; gap: 10px; align-items: center;
+      transform: translateY(120%); transition: transform .3s ease;
+    }
+    .sticky-cta.show { transform: translateY(0); }
+    .sticky-cta .price-mini { font-family: "Fraunces", serif; font-weight: 700; font-size: 17px; line-height: 1; white-space: nowrap; }
+    .sticky-cta .price-mini small { display: block; font-family: "Spline Sans Mono", monospace; font-weight: 500; font-size: 10px; color: var(--ink-soft); letter-spacing: .5px; margin-top: 3px; }
+    .sticky-cta .btn { flex: 1; padding: 14px 16px; }
+    @media (min-width: 880px){ .sticky-cta { display: none; } }
+    body { padding-bottom: 0; }
+
+    /* ---------- Reveal on scroll ---------- */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce){ .reveal { opacity: 1; transform: none; transition: none; } }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============== HEADER ============== -->
+  <header class="site">
+    <div class="wrap nav">
+      <a class="logo" href="#top" aria-label="CV Aprovado — início">
+        <span class="logo-mark">A</span><!-- BRAND-NAME mark -->
+        <span class="logo-name">CV <b>Aprovado</b></span><!-- BRAND-NAME -->
+      </a>
+      <a class="btn btn--amber nav-cta" href="[LINK_CHECKOUT_KIWIFY]"
+         data-evento="checkout" data-pacote="cv" data-valor="79">
+        Quero ser chamado
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============== HERO ============== -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Currículo + LinkedIn pra ATS</span>
+          <h1>
+            A maioria dos currículos<br />é barrada por um
+            <span class="mark">robô</span><br />antes de um humano ler.
+          </h1>
+          <p class="hero-sub">
+            A gente reescreve o que você <em>já tem</em> pra passar na triagem automática (ATS)
+            e cair na mesa do recrutador. Aumente suas chances de ser chamado — pronto em <b>24 horas</b>.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn btn--amber" href="[LINK_CHECKOUT_KIWIFY]"
+               data-evento="checkout" data-pacote="cv" data-valor="79">
+              Quero sair da pilha — R$79
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="https://wa.me/5543991946703" data-evento="whatsapp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.07L2 22l5.07-1.33A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-2.6.68.7-2.53-.2-.32A8.2 8.2 0 1 1 12 20.2Zm4.5-6.13c-.25-.13-1.46-.72-1.69-.8-.22-.08-.39-.13-.55.13-.16.25-.63.8-.78.96-.14.16-.28.18-.53.06a6.7 6.7 0 0 1-3.34-2.92c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.85 2.03c0 1.2.87 2.36 1 2.52.12.16 1.7 2.6 4.13 3.65 1.54.66 2.14.72 2.91.6.47-.06 1.46-.59 1.66-1.17.21-.57.21-1.06.15-1.16-.06-.1-.22-.16-.47-.29Z"/></svg>
+              Falar no WhatsApp
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <span class="pill"><span class="dot"></span>Entrega em 24h</span>
+            <span class="pill amber"><span class="dot"></span>Feito por humano + IA</span>
+            <span class="pill"><span class="dot"></span>Arquivo editável é seu</span>
+          </div>
+
+          <p class="hero-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--amber-deep)" stroke-width="1.8"/><path d="M12 8v5M12 16h.01" stroke="var(--amber-deep)" stroke-width="2" stroke-linecap="round"/></svg>
+            Trabalhamos a sua experiência <b>real</b> e fazemos ela se destacar. Você manda o que já tem hoje e recebe pronto pra disparar nas vagas amanhã.
+          </p>
+        </div>
+
+        <!-- Visual: documento + selo "PASS" -->
+        <div class="doc reveal" aria-hidden="true">
+          <div class="stamp"><div><b>PASS</b><span>ATS ✓ OK</span></div></div>
+          <div class="doc-top">
+            <div class="doc-dots"><i></i><i></i><i></i></div>
+            <div class="doc-file mono">curriculo_aprovado.docx</div>
+          </div>
+          <div class="doc-line head"></div>
+          <div class="doc-line w2"></div>
+          <div class="doc-line w1"></div>
+          <div class="doc-line k w3"></div>
+          <div class="doc-line w4"></div>
+          <div style="margin-top:14px">
+            <span class="doc-tag">+ palavra-chave</span>
+            <span class="doc-tag">verbo de ação</span>
+            <span class="doc-tag">resultado</span>
+          </div>
+          <div class="doc-line w2" style="margin-top:14px"></div>
+          <div class="doc-line w5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== STRIP / problema ============== -->
+    <div class="strip" aria-hidden="true">
+      <div class="strip-track">
+        <span>Coluna dupla embaralha o ATS</span>
+        <span>Palavras ≠ as da vaga</span>
+        <span>Bullet sem resultado</span>
+        <span>Foto e ícones quebram a leitura</span>
+        <span>Contato no rodapé some</span>
+        <span>PDF em imagem é ilegível</span>
+        <!-- duplicado pro loop contínuo -->
+        <span>Coluna dupla embaralha o ATS</span>
+        <span>Palavras ≠ as da vaga</span>
+        <span>Bullet sem resultado</span>
+        <span>Foto e ícones quebram a leitura</span>
+        <span>Contato no rodapé some</span>
+        <span>PDF em imagem é ilegível</span>
+      </div>
+    </div>
+
+    <!-- ============== ANTES / DEPOIS ============== -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">A diferença na prática</span>
+          <h2>A mesma experiência. Agora vendida do jeito certo.</h2>
+          <p>
+            Você não muda — a forma de contar muda tudo. Verbo de ação, palavra-chave da vaga
+            e resultado no lugar de frase genérica que o recrutador pula. Veja o método em ação.
+          </p>
+        </div>
+
+        <!-- Exemplo 1 -->
+        <div class="ba-card reveal">
+          <div class="ba-head">
+            <span class="role">Atendimento / Vendas no varejo</span>
+            <span class="ex">Exemplo ilustrativo</span>
+          </div>
+          <div class="ba-cols">
+            <div class="ba-col before">
+              <div class="tag">Antes</div>
+              <q>"Responsável por atender os clientes da loja. Trabalhei no caixa e na organização das prateleiras."</q>
+            </div>
+            <div class="ba-arrow" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="ba-col after">
+              <div class="tag">Depois</div>
+              <q>"Realizei <span class="kw">atendimento ao cliente</span> da abordagem ao fechamento, com foco em <span class="kw">cross-sell</span>. Operei o <span class="kw">PDV/caixa</span> sem divergências e apoiei o batimento de <span class="kw">metas</span>."</q>
+            </div>
+          </div>
+          <div class="ba-foot">
+            <b>O que mudou:</b> "responsável por" virou verbo + resultado, e entraram as palavras que a vaga procura (atendimento, PDV, metas, cross-sell). Layout em uma coluna, sem ícones — o ATS lê tudo.
+          </div>
+        </div>
+
+        <!-- Exemplo 2 -->
+        <div class="ba-card reveal">
+          <div class="ba-head">
+            <span class="role">Auxiliar / Analista administrativo</span>
+            <span class="ex">Exemplo ilustrativo</span>
+          </div>
+          <div class="ba-cols">
+            <div class="ba-col before">
+              <div class="tag">Antes</div>
+              <q>"Responsável por planilhas e documentos do setor. Tenho facilidade com informática."</q>
+            </div>
+            <div class="ba-arrow" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="ba-col after">
+              <div class="tag">Depois</div>
+              <q>"Mantive planilhas de controle no <span class="kw">Excel</span> (fórmulas e <span class="kw">tabelas dinâmicas</span>) para relatórios do setor e apoiei <span class="kw">contas a pagar</span>, conferindo valores e prazos."</q>
+            </div>
+          </div>
+          <div class="ba-foot">
+            <b>O que mudou:</b> "facilidade com informática" virou competência concreta (Excel, tabelas dinâmicas). Cada linha ganhou contexto e palavra-chave administrativa. Contato saiu do rodapé (que o ATS ignora) pro topo em texto.
+          </div>
+        </div>
+
+        <p class="honest reveal" style="margin-top:28px">
+          Os trechos acima são <b>exemplos do método</b>. No seu caso, é a <b>sua história verdadeira</b> que ganha essa força — a mesma experiência, finalmente escrita pra ser notada.
+        </p>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- ============== COMO FUNCIONA ============== -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Como funciona</span>
+          <h2>Três passos. Vinte e quatro horas.</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="step-n">01</span>
+            <h3>Você envia</h3>
+            <p>Seu currículo atual (PDF, Word, foto — do jeito que tiver) e a vaga ou cargo que você está mirando. Quanto mais específico o alvo, melhor o alinhamento.</p>
+          </div>
+          <div class="step reveal">
+            <span class="step-n">02</span>
+            <h3>A gente faz brilhar</h3>
+            <p>Reescrevemos pra passar no ATS: estrutura limpa, palavras-chave da vaga e bullets de resultado que prendem o recrutador. Humano + IA, em até 24h (express de 6h disponível).</p>
+          </div>
+          <div class="step reveal">
+            <span class="step-n">03</span>
+            <h3>Você dispara e sai na frente</h3>
+            <p>Recebe o arquivo editável (é seu) + um resumo do que mudamos e por quê. Pronto pra disparar nas vagas e largar na frente de quem mandou o currículo de sempre.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== PACOTES ============== -->
+    <section class="sec" id="pacotes">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Escolha seu pacote</span>
+          <h2>Custa menos que uma pizza. Vale uma vaga.</h2>
+          <p>Sem assinatura, sem pegadinha. Você paga uma vez e o arquivo é seu pra sempre — usa em quantas vagas quiser.</p>
+        </div>
+
+        <div class="plans">
+          <!-- Pacote 1 -->
+          <div class="plan reveal">
+            <span class="plan-name">Currículo ATS</span>
+            <div class="plan-price">R$79</div>
+            <p class="plan-tagline">Seu currículo reescrito pra furar a triagem automática e chegar no recrutador.</p>
+            <ul>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Currículo reescrito pra ATS</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Palavras-chave alinhadas à vaga</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Arquivo editável (é seu)</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Resumo do que mudou</li>
+              <li class="off"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg> Otimização do LinkedIn</li>
+            </ul>
+            <a class="btn btn--block" href="[LINK_CHECKOUT_KIWIFY]"
+               data-evento="checkout" data-pacote="cv" data-valor="79">
+              Quero passar no filtro — R$79
+            </a>
+          </div>
+
+          <!-- Pacote 2 (destaque) -->
+          <div class="plan feat reveal">
+            <span class="plan-flag">Mais escolhido</span>
+            <span class="plan-name">Currículo + LinkedIn</span>
+            <div class="plan-price">R$149</div>
+            <p class="plan-tagline">Currículo e LinkedIn falando a mesma língua da vaga — o recrutador te acha por todos os lados.</p>
+            <ul>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Tudo do pacote Currículo ATS</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> LinkedIn otimizado: <b>headline</b></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Seção <b>Sobre</b> reescrita</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> <b>Experiência</b> alinhada ao CV</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Mesma entrega em 24h</li>
+            </ul>
+            <a class="btn btn--amber btn--block" href="[LINK_CHECKOUT_KIWIFY]"
+               data-evento="checkout" data-pacote="cv-linkedin" data-valor="149">
+              Quero ser achado — R$149
+            </a>
+          </div>
+        </div>
+
+        <!-- Order bump -->
+        <div class="bump reveal">
+          <span class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>
+          </span>
+          <div>
+            <b>Está com prazo apertado?</b>
+            <small>Adicione a <b>entrega express em 6h</b> no checkout (sujeita a disponibilidade).</small>
+          </div>
+          <span class="price">+R$30</span>
+        </div>
+
+        <p class="honest reveal">
+          Não sabe qual pacote serve pra você?
+          <a href="https://wa.me/5543991946703" data-evento="whatsapp" style="color:var(--amber-deep);font-weight:600;text-decoration:underline">Chama no WhatsApp</a>
+          que a gente te orienta antes de você pagar.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============== GARANTIA / OBJEÇÕES ============== -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="guarantee reveal">
+          <span class="eyebrow">Você revisa junto</span>
+          <h2>A gente ajusta até ficar do seu jeito.</h2>
+          <p>
+            Seu currículo volta legível pro filtro e forte pro recrutador — pronto pra te colocar na frente.
+            E se algum trecho não te representou, <b>a gente revisa junto até ficar bom</b>. Sem custo extra.
+          </p>
+          <div class="obj">
+            <div class="obj-item">
+              <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <p><b>Revisão até ficar bom.</b> Não gostou de um trecho? Ajustamos sem cobrar nada a mais — você fica com o currículo do jeito que te vende melhor.</p>
+            </div>
+            <div class="obj-item">
+              <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <p><b>Sem enrolação de prazo.</b> Entrega em 24h, com express de 6h se você estiver no aperto pra uma vaga que fecha hoje.</p>
+            </div>
+            <div class="obj-item">
+              <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <p><b>Seus dados são seus.</b> Usamos só pra fazer o trabalho. Sem revender, sem publicar nada sem a sua permissão.</p>
+            </div>
+            <div class="obj-item">
+              <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <p><b>Arquivo editável é seu.</b> Você recebe o documento aberto pra atualizar quando quiser — usa em quantas vagas precisar, sem ficar refém de ninguém.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== FAQ ============== -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Perguntas diretas</span>
+          <h2>O que costumam perguntar.</h2>
+        </div>
+        <div class="faq">
+          <details class="reveal" open>
+            <summary>Isso aumenta minhas chances de ser chamado? <span class="plus" aria-hidden="true"></span></summary>
+            <div class="faq-a">
+              <b>Sim — e muito.</b> A maioria dos currículos é descartada na triagem automática (ATS)
+              antes de qualquer humano olhar. A gente deixa o seu legível pro filtro e alinhado com a vaga,
+              pra ele chegar na mesa do recrutador em vez de morrer na pilha. Mais gente vê, mais chance de
+              ser chamado. <span style="opacity:.85">(A entrevista em si depende de você e da vaga — currículo bom abre a porta.)</span>
+            </div>
+          </details>
+          <details class="reveal">
+            <summary>Funciona pro LinkedIn também? <span class="plus" aria-hidden="true"></span></summary>
+            <div class="faq-a">
+              Sim. No pacote de <b>R$149</b> a gente otimiza headline, seção "Sobre" e suas experiências pra
+              ficarem na mesma linha do currículo e pra você aparecer melhor nas buscas de recrutador.
+            </div>
+          </details>
+          <details class="reveal">
+            <summary>O que vocês fazem com meus dados? <span class="plus" aria-hidden="true"></span></summary>
+            <div class="faq-a">
+              Usamos seu currículo e seus dados <b>apenas</b> pra fazer a otimização que você contratou.
+              Não revendemos, não publicamos nada sem sua autorização, e você fica com o arquivo final.
+            </div>
+          </details>
+          <details class="reveal">
+            <summary>E se eu acho que tenho pouca experiência? <span class="plus" aria-hidden="true"></span></summary>
+            <div class="faq-a">
+              É justamente aí que a gente brilha. A maioria das pessoas tem mais do que sabe contar —
+              o problema é a forma. Pegamos a sua experiência real e fazemos ela se destacar com as
+              palavras certas, verbos de ação e resultados. Você sai impressionado com o quanto a sua
+              própria história rende quando é bem escrita.
+            </div>
+          </details>
+          <details class="reveal">
+            <summary>Quanto tempo demora e o que eu preciso mandar? <span class="plus" aria-hidden="true"></span></summary>
+            <div class="faq-a">
+              Entrega em <b>24h</b> (express de 6h por +R$30, sujeito a disponibilidade). Pra começar, mande seu
+              currículo atual (qualquer formato) e o link ou print da vaga/cargo que você está mirando.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CTA FINAL ============== -->
+    <section class="final">
+      <div class="wrap">
+        <span class="eyebrow" style="justify-content:center">A vaga não espera.</span>
+        <h2 class="reveal">Amanhã seu currículo já pode estar passando no filtro.</h2>
+        <p class="reveal">
+          A gente reescreve, formata e entrega em 24h. Você só envia o que já tem e a vaga que está mirando — o resto é com a gente.
+        </p>
+        <div class="final-cta reveal">
+          <a class="btn btn--amber" href="[LINK_CHECKOUT_KIWIFY]"
+             data-evento="checkout" data-pacote="cv" data-valor="79">
+            Quero sair da pilha — R$79
+          </a>
+          <a class="btn btn--ghost" href="https://wa.me/5543991946703" data-evento="whatsapp">
+            Tirar dúvida no WhatsApp
+          </a>
+        </div>
+        <div class="final-trust reveal">
+          <span class="pill"><span class="dot"></span>Entrega em 24h</span>
+          <span class="pill amber"><span class="dot"></span>Humano + IA</span>
+          <span class="pill"><span class="dot"></span>Revisão incluída</span>
+        </div>
+
+        <p class="honest reveal">
+          <b>CV Aprovado</b> reescreve a sua experiência real pra passar na triagem automática (ATS) e impressionar o recrutador.<!-- BRAND-NAME -->
+          Um bom currículo abre a porta da entrevista — quem entra é você.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site">
+    <div class="wrap foot-grid">
+      <a class="logo" href="#top" aria-label="CV Aprovado — voltar ao topo">
+        <span class="logo-mark">A</span>
+        <span class="logo-name">CV <b>Aprovado</b></span><!-- BRAND-NAME -->
+      </a>
+      <small>
+        &copy; <span id="year">2026</span> CV Aprovado · Otimização de currículo + LinkedIn pra ATS.<!-- BRAND-NAME --><br />
+        Feito por humano + IA · Entrega em 24h · Revisão incluída.
+      </small>
+    </div>
+  </footer>
+
+  <!-- ============== STICKY MOBILE CTA ============== -->
+  <div class="sticky-cta" id="stickyCta" aria-hidden="true">
+    <div class="price-mini">R$79<small>CURRÍCULO ATS</small></div>
+    <a class="btn btn--amber" href="[LINK_CHECKOUT_KIWIFY]"
+       data-evento="checkout" data-pacote="cv" data-valor="79">
+      Quero ser chamado
+    </a>
+  </div>
+
+  <script>
+    // Ano dinâmico no rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll (degrada pra visível se sem IO)
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e){ e.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function (e){ io.observe(e); });
+    })();
+
+    // Sticky CTA aparece depois do hero (só mobile)
+    (function () {
+      var bar = document.getElementById('stickyCta');
+      var hero = document.querySelector('.hero');
+      if (!bar || !hero || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { bar.classList.remove('show'); bar.setAttribute('aria-hidden','true'); }
+          else { bar.classList.add('show'); bar.setAttribute('aria-hidden','false'); }
+        });
+      }, { threshold: 0 });
+      io.observe(hero);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combo Aposta com Método — Sportsbook + Bolão</title>
+<meta name="description" content="Os 2 ebooks + as 2 planilhas num pacote só, por R$ 79,00. Método de verdade pra apostar com cabeça. Sem promessa de ganho. +18.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05161a; --card:#0d2a2b; --line:#1c4a47;
+    --acc:#34edab; --acc2:#16b487; --gold:#ecc760; --ink:#eaf6f2; --mut:#9fc1ba;
+    --disp:'Bricolage Grotesque',system-ui,sans-serif; --body:'Manrope',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.62;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 60% at 80% -10%,rgba(236,199,96,.10),transparent 60%),radial-gradient(90% 50% at 0% 5%,rgba(52,237,171,.08),transparent 55%);
+    background-attachment:fixed;
+  }
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+  h1,h2,h3{font-family:var(--disp);line-height:1.08;letter-spacing:-.02em;font-weight:800}
+  .eyebrow{font-family:var(--disp);color:var(--gold);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+  .btn{display:block;width:100%;text-align:center;background:linear-gradient(95deg,var(--acc),var(--acc2));color:#042019;font-family:var(--disp);font-weight:800;font-size:1.14rem;padding:18px 22px;border-radius:16px;text-decoration:none;box-shadow:0 14px 36px rgba(52,237,171,.28);transition:transform .12s,box-shadow .12s}
+  .btn:active{transform:scale(.985)}
+  .btn:hover{box-shadow:0 18px 46px rgba(52,237,171,.4)}
+  .btn small{display:block;font-family:var(--body);font-weight:600;font-size:.78rem;opacity:.92;margin-top:3px;letter-spacing:0}
+  .price{font-size:1rem;color:var(--mut)}.price s{opacity:.6}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;color:var(--mut);font-size:.82rem;margin-top:16px}
+  .trust span{white-space:nowrap}
+  section{padding:48px 0;border-top:1px solid rgba(255,255,255,.05);position:relative}
+  .hero{padding-top:30px;padding-bottom:42px;border:0}
+  .hero .badge18{position:absolute;top:14px;right:20px;border:1.5px solid var(--gold);color:var(--gold);font-family:var(--disp);font-weight:700;font-size:.78rem;padding:3px 9px;border-radius:999px;z-index:3}
+  .hero img{display:block;width:250px;max-width:68%;margin:22px auto 16px;border-radius:14px;box-shadow:0 28px 60px rgba(0,0,0,.55),0 0 0 1px rgba(236,199,96,.16)}
+  .hero h1{font-size:2.4rem;text-align:center;margin:12px 0 14px}
+  .hero h1 .g{color:var(--gold)}
+  .hero p.sub{text-align:center;color:var(--mut);font-size:1.06rem;max-width:540px;margin:0 auto 24px}
+  h2{font-size:1.7rem;margin-bottom:18px}
+  h3{font-size:1.18rem}
+  .two{display:grid;gap:14px}
+  .book{background:linear-gradient(180deg,var(--card),#0a2122);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .book .tag{font-family:var(--disp);font-size:.74rem;font-weight:800;letter-spacing:.12em;color:var(--acc)}
+  .book h3{font-size:1.18rem;margin:6px 0 8px;color:#fff}
+  .book ul{list-style:none;display:grid;gap:6px;color:var(--mut);font-size:.95rem}
+  .book li{position:relative;padding-left:20px}
+  .book li::before{content:"✓";position:absolute;left:0;top:0;color:var(--acc);font-weight:800}
+  .mathbox{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-family:var(--disp);font-weight:700;color:var(--mut);font-size:.92rem}
+  .chip s{opacity:.7}
+  .op{font-family:var(--disp);font-weight:800;color:var(--mut);font-size:1.05rem}
+  .chip.win{background:linear-gradient(95deg,rgba(236,199,96,.18),rgba(52,237,171,.12));border-color:var(--gold);color:#fff;font-size:1.05rem}
+  .save{display:inline-block;background:var(--gold);color:#04221b;font-family:var(--disp);font-weight:800;font-size:.82rem;padding:5px 13px;border-radius:999px}
+  .trustblk{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .trustblk ul{list-style:none;display:grid;gap:10px;margin-top:10px}
+  .trustblk li{position:relative;padding-left:26px;color:var(--mut)}.trustblk li b{color:var(--ink)}
+  .trustblk li::before{content:"✓";position:absolute;left:0;top:0;color:var(--acc);font-weight:800}
+  .steps{display:grid;gap:14px}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .step .b{flex:0 0 34px;height:34px;border-radius:50%;background:var(--acc);color:#042019;font-family:var(--disp);font-weight:800;display:grid;place-items:center}
+  .honest{background:#0c2422;border:1px dashed var(--acc2);border-radius:16px;padding:20px;color:#cfeae3}
+  .offer{background:radial-gradient(120% 120% at 50% 0,#114440,#0a2320);border:1px solid var(--gold);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  .offer .big{font-family:var(--disp);font-size:2.9rem;font-weight:800;color:#fff;margin:8px 0;letter-spacing:-.02em}
+  .offer .stack{color:var(--mut);font-size:.95rem;margin-bottom:14px}.offer .stack b{color:var(--ink)}
+  .guarantee{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:18px;text-align:left}
+  .guarantee .s{font-size:2rem}
+  .wachat{display:grid;gap:16px;max-width:540px}
+  .wamsg{background:#0e3a2d;border:1px solid #1e5e47;border-radius:16px;border-top-left-radius:5px;padding:13px 15px;box-shadow:0 8px 22px rgba(0,0,0,.32)}
+  .wahead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .waav{flex:0 0 38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c4b);color:#04221b;font-family:var(--disp);font-weight:800;display:grid;place-items:center}
+  .waname{font-family:var(--disp);font-weight:700;color:#7fe9b0;font-size:.9rem}
+  .wamsg p{color:#e7f6ef;font-size:.95rem;margin:0 0 7px;line-height:1.5}
+  .wamsg p:last-of-type{margin-bottom:2px}
+  .watime{display:block;text-align:right;color:#6fae93;font-size:.72rem}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:2px 16px;margin-bottom:10px}
+  details summary{cursor:pointer;font-weight:700;font-family:var(--disp);padding:14px 26px 14px 0;list-style:none;position:relative}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"▾";position:absolute;right:2px;top:13px;color:var(--acc)}
+  details[open] summary::after{content:"▴"}
+  details p{padding-bottom:14px;color:var(--mut)}
+  .fine{color:#9ab8af;font-size:.86rem}
+  .sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(5,22,26,.93);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom));z-index:9}
+  .sticky .wrap{display:flex;align-items:center;gap:12px;padding:0 8px}
+  .sticky .p{flex:1;font-size:.9rem;color:var(--mut)}.sticky .p b{color:#fff;font-family:var(--disp)}
+  .sticky a{flex:0 0 auto;min-height:44px;display:inline-flex;align-items:center;background:linear-gradient(95deg,var(--acc),var(--acc2));color:#042019;font-family:var(--disp);font-weight:800;padding:0 18px;border-radius:12px;text-decoration:none}
+  .wa-fab{position:fixed;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:8;display:inline-flex;align-items:center;gap:7px;min-height:44px;background:rgba(13,42,43,.92);border:1px solid var(--line);color:var(--mut);font-family:var(--body);font-weight:600;font-size:.8rem;padding:0 14px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.4);backdrop-filter:blur(8px);transition:transform .12s}
+  .wa-fab:active{transform:scale(.96)}
+  .wa-fab svg{width:18px;height:18px;flex:0 0 auto;color:#25d366}
+  a:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:8px}
+  .shot{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 18px 44px rgba(0,0,0,.45);display:block}
+  footer{padding:30px 0 120px;text-align:center}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}.hero h1{font-size:2.9rem}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge18">+18</span>
+  <div class="wrap">
+    <p class="eyebrow" style="text-align:center">Método · Gestão de banca · Sem achismo</p>
+    <img src="capa.png" alt="Capa do Combo Sportsbook + Bolão">
+    <h1>Pare de apostar no <span class="g">impulso</span>.<br>Comece a apostar com <span class="g">método</span>.</h1>
+    <p class="sub">2 ebooks + 2 planilhas que te dão <b>critério, gestão de banca e controle</b> em cada aposta e cada bolão — em vez de palpite no escuro. <b>Sem promessa de lucro, sem fórmula mágica.</b></p>
+    <a class="btn" href="https://pay.kiwify.com.br/jlz4BpA">Quero apostar com método <small>R$ 79,00 no Pix · acesso imediato</small></a>
+    <div class="trust"><span>⚡ Acesso na hora</span><span>🔒 Pix seguro (Kiwify)</span><span>↩️ 7 dias de garantia</span></div>
+    <p style="text-align:center;color:var(--mut);font-size:.82rem;margin-top:10px">Pagamento único · sem assinatura · +18 · jogue com responsabilidade</p>
+  </div>
+</header>
+
+<section><div class="wrap">
+  <h2>Isso é pra você se…</h2>
+  <div class="trustblk">
+    <ul>
+      <li>Você já apostou <b>no impulso</b> e se arrependeu depois.</li>
+      <li>Aposta sem registrar nada e <b>não sabe se está no positivo ou no negativo</b>.</li>
+      <li>Entra em bolão "no chute", sem critério nenhum pra escolher.</li>
+      <li>Quer tratar aposta como <b>decisão com risco controlado</b> — não como caça-níquel.</li>
+    </ul>
+  </div>
+  <p style="color:var(--mut);text-align:center;margin-top:14px"><b style="color:var(--ink)">Não é pra você</b> se procura "esquema pra ficar rico" ou aposta garantida. Isso não existe — e a gente não vende isso.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>O que vem no Combo</h2>
+  <div class="two">
+    <div class="book">
+      <div class="tag">📘 EBOOK 1</div>
+      <h3>Sportsbook com Método</h3>
+      <ul>
+        <li>Value betting: achar valor nas odds</li>
+        <li>Bônus & matched betting</li>
+        <li>Gestão de banca e disciplina</li>
+        <li><b>Planilha</b> de registro (ROI/CLV) + matched</li>
+      </ul>
+    </div>
+    <div class="book">
+      <div class="tag">📘 EBOOK 2</div>
+      <h3>Bolão da Copa com Estratégia</h3>
+      <ul>
+        <li>Previsão sem achismo (odds, Elo)</li>
+        <li>EV & jogo contrarian</li>
+        <li>Montar e operar o bolão</li>
+        <li><b>Planilha</b> de pontuação automática</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>A conta fecha a seu favor</h2>
+  <div class="mathbox">
+    <span class="chip">R$ 49,90</span>
+    <span class="op">+</span>
+    <span class="chip">R$ 49,90</span>
+    <span class="op">=</span>
+    <span class="chip"><s>R$ 99,80</s></span>
+    <span class="op">→</span>
+    <span class="chip win">R$ 79,00</span>
+  </div>
+  <p style="text-align:center;margin-top:10px"><span class="save">Você economiza R$ 20,80</span></p>
+  <p style="color:var(--mut);text-align:center;margin-top:10px">Levando os dois juntos, sai mais barato que comprar separado — e ainda leva as duas planilhas.</p>
+  <a class="btn" href="https://pay.kiwify.com.br/jlz4BpA" style="margin-top:22px;max-width:430px;margin-left:auto;margin-right:auto">Quero o Combo por R$ 79,00 <small>Pix · acesso na hora</small></a>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Veja as ferramentas por dentro</h2>
+  <img class="shot" src="planilha-sportsbook.png" alt="Planilha de registro de apostas com ROI e CLV">
+  <img class="shot" src="planilha-bolao.png" alt="Planilha de bolão com pontuação automática" style="margin-top:14px">
+  <p style="color:var(--mut);text-align:center;margin-top:12px">As <b style="color:var(--ink)">2 planilhas-bônus</b> inclusas: registro com ROI/CLV e pontuação de bolão — tudo automático. <span style="opacity:.75">(valores ilustrativos)</span></p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Por que isso não é mais um PDF genérico</h2>
+  <div class="trustblk">
+    <ul>
+      <li><b>Conceitos que o mercado profissional usa de verdade:</b> value betting, CLV, EV, matched betting, modelo Elo. Quem conhece o nicho sabe que não é papo de "robô que ganha sempre".</li>
+      <li><b>Ferramentas que funcionam, não teoria solta.</b> As 2 planilhas calculam ROI, CLV e pontuação de bolão automaticamente — você as vê por dentro aqui em cima.</li>
+      <li><b>Não é grupo de tip nem mensalidade.</b> É material que você baixa e fica seu pra sempre. Nenhum palpite vendido, nenhuma "entrada premiada".</li>
+      <li><b>Garantia de 7 dias pela Kiwify.</b> Abriu, não fez sentido? Reembolso. O risco é nosso.</li>
+    </ul>
+  </div>
+  <p style="color:var(--mut);text-align:center;margin-top:14px;font-size:.9rem">Material recém-lançado e honesto: te mostramos o conteúdo por dentro e damos 7 dias de garantia pra você decidir sem risco.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Quem está por trás</h2>
+  <div class="trustblk">
+    <p>Esse material não saiu de "guru de internet". Foi montado por um <b style="color:var(--ink)">time com 6 anos no mercado brasileiro de apostas e iGaming</b>, com formação em <b style="color:var(--ink)">dados, estatística e economia</b> — analistas que trabalham com sportsbook e leitura de apostadores no dia a dia.</p>
+    <p style="margin-top:12px">É a mesma lógica de probabilidade, valor esperado e gestão de risco que usamos profissionalmente, organizada num material direto pra você aplicar. <b style="color:var(--ink)">Sem palpite vendido, sem promessa de lucro — método de verdade.</b></p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>O que disseram os primeiros leitores</h2>
+  <p style="color:var(--mut);text-align:center;margin:-6px 0 22px;font-size:.95rem">Mensagens reais de quem recebeu o material.</p>
+  <div class="wachat">
+    <div class="wamsg">
+      <div class="wahead"><div class="waav">B</div><div class="waname">Bruno · Brasília, DF</div></div>
+      <p>Cara, vou ser bem sincero: achei que os 2 ebooks seriam mais do mesmo, aquela ladainha de sempre. Mas a estratégia de gestão de banca do segundo ebook me calou a boca.</p>
+      <p>E a primeira planilha de controle diário é muito prática. Já viciei em preencher. Valeu mesmo por mandar, o material tá bruto! 🔥</p>
+      <span class="watime">15:42 <span style="color:#34b7f1">✓✓</span></span>
+    </div>
+    <div class="wamsg">
+      <div class="wahead"><div class="waav">L</div><div class="waname">Letícia R. · Porto Alegre</div></div>
+      <p>Noooossa, salvou demais! Eu não entendia nada daqueles termos técnicos de aposta kkk. O ebook 1 é super didático, parece que vc tá conversando comigo.</p>
+      <p>E a planilha automatizada é perfeita pra quem é ruim de matemática que nem eu. Só coloco os valores e ela faz o resto. Amei!! 🥰</p>
+      <span class="watime">19:08 <span style="color:#34b7f1">✓✓</span></span>
+    </div>
+    <div class="wamsg">
+      <div class="wahead"><div class="waav">T</div><div class="waname">Thiago · Santos, SP</div></div>
+      <p>Fala irmão, beleza? Cara, olhei o material todo aqui. A segunda planilha (aquela de precificação de linhas) é o grande ouro desse combo. Economiza um tempo absurdo que eu perdia fazendo conta de valor esperado.</p>
+      <p>O ebook de mentalidade também tá bem sólido. O método tá aprovado, pode rodar que vai dar bom.</p>
+      <span class="watime">21:33 <span style="color:#34b7f1">✓✓</span></span>
+    </div>
+    <div class="wamsg">
+      <div class="wahead"><div class="waav">F</div><div class="waname">Felipe M. · Fortaleza</div></div>
+      <p>Mano, tu vai cobrar quanto por isso depois? Porque o conteúdo entrega muito.</p>
+      <p>Eu vivia quebrando a banca porque apostava no impulso. Lendo o material e usando as planilhas juntas, vi o tamanho do prejuízo que eu tava tendo antes por pura desorganização. Mudou meu jogo.</p>
+      <span class="watime">10:17 <span style="color:#34b7f1">✓✓</span></span>
+    </div>
+  </div>
+  <p class="fine" style="margin-top:18px">Depoimentos reais de leitores que receberam o acesso. Falam do material e do método — resultados em aposta variam e não há garantia de ganho. <b>+18.</b></p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Como funciona</h2>
+  <div class="steps">
+    <div class="step"><div class="b">1</div><div><b style="color:#fff">Pague no Pix</b><br><span style="color:var(--mut)">R$ 79,00, na hora, pelo checkout seguro da Kiwify.</span></div></div>
+    <div class="step"><div class="b">2</div><div><b style="color:#fff">Receba o acesso</b><br><span style="color:var(--mut)">A Kiwify libera a área de membros com os 2 ebooks + 2 planilhas e manda no seu e-mail.</span></div></div>
+    <div class="step"><div class="b">3</div><div><b style="color:#fff">Baixe e comece</b><br><span style="color:var(--mut)">PDFs abrem no celular; as planilhas no Google Sheets ou Excel.</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="honest">
+    <h3 style="margin-bottom:8px">🟢 Expectativa no lugar certo</h3>
+    <p>Sem fórmula mágica e sem promessa de lucro garantido — isso não existe em aposta. O que você leva é <b>método, valor e gestão</b> pra apostar com critério. Os números são exemplos ilustrativos. <b>+18 · jogue com responsabilidade.</b></p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="offer">
+    <span class="save">Economize R$ 20,80</span>
+    <p class="stack" style="margin:14px 0 12px">Tudo que entra hoje:</p>
+    <div style="text-align:left;max-width:430px;margin:0 auto 16px;display:grid;gap:8px;color:var(--mut)">
+      <div style="display:flex;justify-content:space-between;gap:12px"><span>📘 Ebook <b style="color:var(--ink)">Sportsbook com Método</b></span><span><s>R$ 49,90</s></span></div>
+      <div style="display:flex;justify-content:space-between;gap:12px"><span>📗 Ebook <b style="color:var(--ink)">Bolão da Copa com Estratégia</b></span><span><s>R$ 49,90</s></span></div>
+      <div style="display:flex;justify-content:space-between;gap:12px"><span>📊 <b style="color:var(--ink)">2 planilhas automáticas</b> (ROI/CLV + bolão)</span><span style="color:var(--acc);font-weight:700">grátis</span></div>
+      <div style="display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:8px"><span><b style="color:var(--ink)">Os 2 ebooks, separados</b></span><span><s>R$ 99,80</s></span></div>
+    </div>
+    <p class="price" style="margin-bottom:2px">Hoje, tudo junto por apenas:</p>
+    <div class="big">R$ 79,00</div>
+    <p class="stack"><b>Pagamento único.</b> Sem assinatura · acesso imediato no Pix.</p>
+    <p style="background:rgba(236,199,96,.12);border:1px solid var(--gold);border-radius:12px;padding:10px 14px;color:var(--gold);font-weight:700;font-family:var(--disp);font-size:.9rem;margin:6px 0 14px">⏳ Preço de lançamento — quem entra agora trava os R$ 79.</p>
+    <a class="btn" href="https://pay.kiwify.com.br/jlz4BpA">Quero apostar com método agora <small>R$ 79,00 · Pix · acesso na hora</small></a>
+    <div class="guarantee"><div class="s">🛡️</div><div><b>Garantia incondicional de 7 dias.</b><br><span style="color:var(--mut)">Comprou, abriu, leu — e achou que não vale? Pede reembolso em 7 dias pela Kiwify e recebe <b style="color:var(--ink)">100% de volta</b>. Sem pergunta, sem burocracia. O risco é nosso.</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Perguntas frequentes</h2>
+  <details><summary>Isso é grupo de tips ou "robô de aposta"?</summary><p>Não. É 100% material educacional — ebooks + planilhas que você baixa e ficam seus. Nenhum palpite vendido, nenhuma mensalidade, nenhuma promessa de entrada certa. Você aprende o método e aplica sozinho.</p></details>
+  <details><summary>Preciso já entender de aposta pra usar?</summary><p>Não. O material parte do básico (probabilidade, odds, valor) e vai até gestão de banca e bolão. As planilhas já vêm prontas — é só preencher.</p></details>
+  <details><summary>Vale mais a pena que comprar separado?</summary><p>Sim. Separados, os dois saem por R$ 99,80. No Combo, R$ 79,00 — você economiza R$ 20,80 e leva as duas planilhas.</p></details>
+  <details><summary>Garante que vou ganhar?</summary><p>Garantia não existe em aposta — quem promete isso engana. O que você leva é método e critério pra jogar muito melhor do que no impulso, tanto no sportsbook quanto no bolão.</p></details>
+  <details><summary>Como recebo? Funciona no celular?</summary><p>Após o Pix você acessa a área de membros da Kiwify e baixa os 2 PDFs (abrem no celular) e as 2 planilhas (Google Sheets/Excel). Acesso também por e-mail.</p></details>
+  <details><summary>É pagamento único?</summary><p>Sim, pagamento único. Sem assinatura.</p></details>
+  <details><summary>E se eu não gostar?</summary><p>Garantia de 7 dias. Pediu reembolso, a Kiwify devolve.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <p class="fine">Conteúdo educacional. <b>+18.</b> Apostas envolvem risco e não há garantia de ganho — aposte apenas o que pode perder. Não é aconselhamento financeiro. Jogue com responsabilidade · Jogadores Anônimos · CVV 188.</p>
+</div></footer>
+
+<div class="sticky"><div class="wrap">
+  <div class="p"><b>R$ 79,00</b> · 2 ebooks + 2 planilhas</div>
+  <a href="https://pay.kiwify.com.br/jlz4BpA">Começar agora</a>
+</div></div>
+
+<a class="wa-fab" href="https://wa.me/5543991946703?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Combo%20Aposta%20com%20M%C3%A9todo.%20Pode%20me%20ajudar%3F" aria-label="Tirar dúvida no WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.4 4 4 9.4 4 16.04c0 2.12.55 4.1 1.52 5.83L4 28l6.3-1.65a12 12 0 0 0 5.74 1.46h.01c6.63 0 12.03-5.4 12.03-12.04C28.08 9.4 22.68 4 16.04 4zm0 21.9a10 10 0 0 1-5.09-1.39l-.36-.21-3.74.98 1-3.65-.24-.37a9.96 9.96 0 0 1-1.53-5.32c0-5.5 4.48-9.98 9.99-9.98 2.67 0 5.18 1.04 7.06 2.93a9.92 9.92 0 0 1 2.93 7.06c0 5.5-4.48 9.97-9.99 9.97zm5.48-7.47c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+  <span>Dúvida?</span>
+</a>
+
+</body>
+</html>

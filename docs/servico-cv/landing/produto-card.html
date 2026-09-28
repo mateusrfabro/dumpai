@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+  Card do produto pra Kiwify (300x250). O PNG pronto é o produto-card.png ao lado.
+  Este HTML é a fonte (renderizado pra PNG via navegador headless).
+  Pra trocar texto: edite as linhas BRAND / BENEFIT abaixo e gere o PNG de novo.
+-->
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      width:300px;height:250px;position:relative;overflow:hidden;
+      background:#16233a;color:#f6f1e7;
+      background-image:radial-gradient(circle at 112% -12%, rgba(217,132,43,.32), transparent 46%),
+                       radial-gradient(circle at -12% 122%, rgba(47,125,82,.18), transparent 46%);
+      padding:20px 22px;font-family:"Fraunces",Georgia,serif;
+    }
+    .eyebrow{font-family:"Spline Sans Mono",monospace;font-size:9.5px;font-weight:600;letter-spacing:2px;
+      text-transform:uppercase;color:#e2a35a;}
+    .title{font-size:26px;font-weight:600;line-height:1.04;letter-spacing:-.5px;margin:9px 0 0;max-width:7.5ch;}
+    .benefit{font-size:12.5px;color:#cdbfa6;margin-top:11px;font-weight:500;max-width:30ch;line-height:1.32;}
+    .pills{position:absolute;left:22px;bottom:18px;display:flex;gap:7px;}
+    .pill{font-family:"Spline Sans Mono",monospace;font-size:9px;font-weight:600;letter-spacing:.5px;
+      border:1px solid rgba(246,241,231,.38);border-radius:999px;padding:5px 9px;color:#f6f1e7;}
+    .stamp{position:absolute;right:16px;top:16px;width:74px;height:74px;border-radius:50%;
+      display:grid;place-items:center;text-align:center;color:#7ed3a2;border:2.5px solid #2f7d52;
+      background:rgba(47,125,82,.16);transform:rotate(-12deg);}
+    .stamp b{display:block;font-size:13px;font-weight:900;line-height:1;letter-spacing:.4px;}
+    .stamp span{font-family:"Spline Sans Mono",monospace;font-size:6px;letter-spacing:1.3px;margin-top:3px;color:#9fd9b6;}
+    .stamp::before{content:"";position:absolute;inset:5px;border:1.2px solid rgba(47,125,82,.45);border-radius:50%;}
+  </style>
+</head>
+<body>
+  <div class="stamp"><div><b>APROVADO</b><span>NO FILTRO</span></div></div>
+  <span class="eyebrow">Currículo + LinkedIn</span><!-- BRAND eyebrow -->
+  <h1 class="title">Currículo Que Chama</h1><!-- BRAND -->
+  <p class="benefit">Passe no filtro das vagas e seja chamado pra entrevista.</p><!-- BENEFIT -->
+  <div class="pills">
+    <span class="pill">ENTREGA 24H</span>
+    <span class="pill">HUMANO + IA</span>
+  </div>
+</body>
+</html>
