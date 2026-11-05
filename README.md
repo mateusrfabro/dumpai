@@ -4,6 +4,10 @@ Web app **mobile-first** que escolhe as **10 melhores fotos** do seu rolê para 
 *photo dump* perfeito no Instagram — usando IA multimodal (Claude). Já nasce
 **monetizado**: o usuário paga (Pix via Kiwify) para liberar a ferramenta.
 
+## Estado (05/11/2026)
+
+No ar em https://dumpai-omega.vercel.app. Vendas perto de zero; sem desenvolvimento desde 22/06/2026.
+
 ## Fluxo
 
 ```

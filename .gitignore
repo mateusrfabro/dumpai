@@ -27,3 +27,7 @@ yarn-error.log*
 
 # claude code — config local de máquina (permissões); agentes versionados ficam
 .claude/settings.local.json
+
+# env: qualquer .env* fica fora; so o exemplo e versionado
+.env*
+!.env.local.example
