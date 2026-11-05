@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bolão da Copa com Estratégia — jogue melhor que a manada</title>
+<meta name="description" content="No bolão você joga contra as pessoas, não contra a casa. Estratégia de EV/contrarian + planilha de pontuação automática. Sem promessa de ganho. +18.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#052a14; --card:#0c3d21; --line:#1d5a38;
+    --acc:#41dc81; --acc2:#1f9e54; --gold:#ffd86b; --ink:#eafaf0; --mut:#a6d4ba;
+    --disp:'Bricolage Grotesque',system-ui,sans-serif; --body:'Manrope',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.62;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 60% at 80% -10%,rgba(255,216,107,.10),transparent 60%),radial-gradient(90% 50% at 0% 5%,rgba(65,220,129,.10),transparent 55%);
+    background-attachment:fixed;
+  }
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+  h1,h2,h3{font-family:var(--disp);line-height:1.08;letter-spacing:-.02em;font-weight:800}
+  .eyebrow{font-family:var(--disp);color:var(--gold);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+  .btn{display:block;width:100%;text-align:center;background:linear-gradient(95deg,var(--acc),var(--acc2));color:#042019;font-family:var(--disp);font-weight:800;font-size:1.14rem;padding:18px 22px;border-radius:16px;text-decoration:none;box-shadow:0 14px 36px rgba(65,220,129,.28);transition:transform .12s,box-shadow .12s}
+  .btn:active{transform:scale(.985)}
+  .btn:hover{box-shadow:0 18px 46px rgba(65,220,129,.4)}
+  .btn small{display:block;font-family:var(--body);font-weight:600;font-size:.78rem;opacity:.85;margin-top:3px;letter-spacing:0}
+  .btn.alt{background:transparent;color:var(--gold);border:1.5px solid var(--gold);box-shadow:none}
+  .price{font-size:1rem;color:var(--mut)}.price s{opacity:.6}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;color:var(--mut);font-size:.82rem;margin-top:16px}
+  .trust span{white-space:nowrap}
+  section{padding:48px 0;border-top:1px solid rgba(255,255,255,.05);position:relative}
+  .hero{padding-top:30px;border:0}
+  .hero .badge18{position:absolute;top:14px;right:20px;border:1.5px solid var(--gold);color:var(--gold);font-family:var(--disp);font-weight:700;font-size:.78rem;padding:3px 9px;border-radius:999px;z-index:3}
+  .hero img{display:block;width:230px;max-width:62%;margin:22px auto 8px;border-radius:14px;box-shadow:0 28px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,216,107,.14)}
+  .hero h1{font-size:2.4rem;text-align:center;margin:12px 0 14px}
+  .hero h1 .g{color:var(--gold)}
+  .hero p.sub{text-align:center;color:var(--mut);font-size:1.06rem;max-width:540px;margin:0 auto 24px}
+  h2{font-size:1.7rem;margin-bottom:18px}
+  .pill{display:grid;gap:14px}
+  .card{background:linear-gradient(180deg,var(--card),#082d18);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .card h3{font-size:1.14rem;margin-bottom:5px;color:#fff}.card .ic{font-size:1.6rem}
+  .list{display:grid;gap:12px;margin-top:6px}
+  .list .it{display:flex;gap:12px;align-items:flex-start}.list .it b{color:var(--acc)}
+  .it .n{flex:0 0 30px;height:30px;border-radius:9px;background:#0f3d24;color:var(--acc);font-family:var(--disp);font-weight:800;display:grid;place-items:center;font-size:.9rem}
+  .two{display:grid;gap:14px}
+  .two .box{border-radius:16px;padding:18px;border:1px solid var(--line)}
+  .yes{background:rgba(65,220,129,.08)}.no{background:rgba(255,120,120,.05);border-color:#5a2b2b}
+  .yes h3{color:var(--acc)}.no h3{color:#ff9a9a}
+  .steps{display:grid;gap:14px}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .step .b{flex:0 0 34px;height:34px;border-radius:50%;background:var(--acc);color:#042019;font-family:var(--disp);font-weight:800;display:grid;place-items:center}
+  .trustblk{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .trustblk ul{list-style:none;display:grid;gap:10px;margin-top:10px}
+  .trustblk li{position:relative;padding-left:26px;color:var(--mut)}.trustblk li b{color:var(--ink)}
+  .trustblk li::before{content:"✓";position:absolute;left:0;top:0;color:var(--acc);font-weight:800}
+  .honest{background:#0a3019;border:1px dashed var(--acc2);border-radius:16px;padding:20px;color:#d3eedd}
+  .offer{background:radial-gradient(120% 120% at 50% 0,#0e5a2e,#082d18);border:1px solid var(--gold);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  .offer .big{font-family:var(--disp);font-size:2.8rem;font-weight:800;color:#fff;margin:4px 0;letter-spacing:-.02em}
+  .offer .stack{color:var(--mut);font-size:.95rem;margin-bottom:14px}.offer .stack b{color:var(--ink)}
+  .guarantee{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:18px;text-align:left}
+  .guarantee .s{font-size:2rem}
+  .bump{margin-top:14px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:2px 16px;margin-bottom:10px}
+  details summary{cursor:pointer;font-weight:700;font-family:var(--disp);padding:14px 26px 14px 0;list-style:none;position:relative}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"▾";position:absolute;right:2px;top:13px;color:var(--acc)}
+  details[open] summary::after{content:"▴"}
+  details p{padding-bottom:14px;color:var(--mut)}
+  .fine{color:#a9d2bb;font-size:.86rem}
+  .sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(5,42,20,.93);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom));z-index:9}
+  .sticky .wrap{display:flex;align-items:center;gap:12px;padding:0 8px}
+  .sticky .p{flex:1;font-size:.9rem;color:var(--mut)}.sticky .p b{color:#fff;font-family:var(--disp)}
+  .sticky a{flex:0 0 auto;min-height:44px;display:inline-flex;align-items:center;background:linear-gradient(95deg,var(--acc),var(--acc2));color:#042019;font-family:var(--disp);font-weight:800;padding:0 18px;border-radius:12px;text-decoration:none}
+  .wa-fab{position:fixed;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:8;display:inline-flex;align-items:center;gap:7px;min-height:44px;background:rgba(13,42,43,.92);border:1px solid var(--line);color:var(--mut);font-family:var(--body);font-weight:600;font-size:.8rem;padding:0 14px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.4);backdrop-filter:blur(8px);transition:transform .12s}
+  .wa-fab:active{transform:scale(.96)}
+  .wa-fab svg{width:18px;height:18px;flex:0 0 auto;color:#25d366}
+  a:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:8px}
+  .shot{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 18px 44px rgba(0,0,0,.45);display:block}
+  footer{padding:30px 0 120px;text-align:center}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}.pill{grid-template-columns:1fr 1fr 1fr}.hero h1{font-size:2.9rem}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge18">+18</span>
+  <div class="wrap">
+    <p class="eyebrow" style="text-align:center">Ebook · Bolão com estratégia</p>
+    <img src="capa.png" alt="Capa do ebook Bolão da Copa com Estratégia">
+    <h1>No bolão, você não joga contra a casa.<br><span class="g">Joga contra as pessoas — e dá pra jogar melhor.</span></h1>
+    <p class="sub">A maioria palpita pelo coração e divide o pote quando o favorito ganha. Quem usa estratégia sabe a hora de <b>fugir da manada</b> e levar o bolo sozinho.</p>
+    <a class="btn" href="https://pay.kiwify.com.br/6UQRi4o">Quero jogar pra levar o pote <small>R$ 49,90 no Pix · acesso imediato</small></a>
+    <div class="trust"><span>⚡ Acesso na hora</span><span>🔒 Pix seguro (Kiwify)</span><span>↩️ 7 dias de garantia</span></div>
+  </div>
+</header>
+
+<section><div class="wrap">
+  <h2>O erro que faz você dividir o prêmio 👇</h2>
+  <p style="color:var(--mut)">Todo mundo no bolão coloca o mesmo favorito campeão. Resultado: quando ele ganha, você <b style="color:var(--ink)">divide o pote com meio bolão</b>. Quem entende de estratégia sabe que o jogo não é "acertar tudo" — é acertar <b style="color:var(--ink)">diferente</b> de um jeito que maximize sua fatia.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>O que você vai dominar</h2>
+  <div class="pill">
+    <div class="card"><div class="ic">🔮</div><h3>Previsão sem achismo</h3><p style="color:var(--mut)">Estimar chances de verdade com odds, ranking/Elo e contexto — e fugir dos vieses que estragam o palpite.</p></div>
+    <div class="card"><div class="ic">🎯</div><h3>EV & Contrarian</h3><p style="color:var(--mut)">Quando pegar o azarão que a manada ignora pra não dividir o pote — e como o tamanho do bolão muda tudo.</p></div>
+    <div class="card"><div class="ic">🏆</div><h3>Montar & operar</h3><p style="color:var(--mut)">Sistemas de pontuação, organização justa e o checklist do participante estratégico.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>O que tem dentro</h2>
+  <div class="list">
+    <div class="it"><div class="n">0</div><div><b>Por que estratégia importa</b> — você joga contra pessoas, não contra a margem da casa.</div></div>
+    <div class="it"><div class="n">1</div><div><b>Fundamentos de previsão</b> — odds, Elo, zebra em jogo único e vieses.</div></div>
+    <div class="it"><div class="n">2</div><div><b>EV & jogo contrarian</b> — maximizar a chance de ser único campeão, com exemplos.</div></div>
+    <div class="it"><div class="n">3</div><div><b>Montar e operar o bolão</b> — pontuação, regras justas e disciplina.</div></div>
+    <div class="it"><div class="n">★</div><div><b>Bônus incluso:</b> planilha de bolão com <b>pontuação automática</b> (configura, digita, soma sozinho).</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Veja a ferramenta por dentro</h2>
+  <img class="shot" src="planilha.png" alt="Planilha de bolão com pontuação automática">
+  <p style="color:var(--mut);text-align:center;margin-top:12px">Sua planilha-bônus: digite os palpites e os resultados — ela <b style="color:var(--ink)">soma os pontos automaticamente</b>. <span style="opacity:.75">(valores ilustrativos)</span></p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Por que confiar neste material</h2>
+  <div class="trustblk">
+    <ul>
+      <li><b>Estratégia, não promessa.</b> A Copa tem muita sorte — o livro deixa isso claro e foca no que você controla.</li>
+      <li><b>Lógica de EV de verdade.</b> A mesma matemática de quem aposta com método, aplicada ao bolão.</li>
+      <li><b>Planilha pronta.</b> Pontuação automática pra você acompanhar o bolão sem dor de cabeça.</li>
+      <li><b>Garantia de 7 dias.</b> Reembolso pela Kiwify se não fizer sentido pra você.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Quem está por trás</h2>
+  <div class="trustblk">
+    <p>Esse material não saiu de "guru de internet". Foi montado por um <b style="color:var(--ink)">time com 6 anos no mercado brasileiro de apostas e iGaming</b>, com formação em <b style="color:var(--ink)">dados, estatística e economia</b> — analistas que trabalham com sportsbook e leitura de apostadores no dia a dia.</p>
+    <p style="margin-top:12px">A mesma lógica de probabilidade e valor esperado que usamos profissionalmente, aplicada ao bolão pra você jogar melhor que a manada. <b style="color:var(--ink)">Sem palpite vendido, sem promessa de ganho — estratégia de verdade.</b></p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Como funciona</h2>
+  <div class="steps">
+    <div class="step"><div class="b">1</div><div><b style="color:#fff">Pague no Pix</b><br><span style="color:var(--mut)">R$ 49,90, na hora, pelo checkout seguro da Kiwify.</span></div></div>
+    <div class="step"><div class="b">2</div><div><b style="color:#fff">Receba o acesso</b><br><span style="color:var(--mut)">A Kiwify libera sua área de membros e manda o acesso no seu e-mail.</span></div></div>
+    <div class="step"><div class="b">3</div><div><b style="color:#fff">Baixe e use</b><br><span style="color:var(--mut)">PDF abre no celular; a planilha abre no Google Sheets ou Excel. Pronto pro próximo bolão.</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>É pra você?</h2>
+  <div class="two">
+    <div class="box yes"><h3>✓ É pra você se…</h3><p style="color:var(--mut)">Participa ou organiza bolões e quer parar de chutar pelo coração — ou montar um bolão mais justo e divertido.</p></div>
+    <div class="box no"><h3>✕ NÃO é pra você se…</h3><p style="color:var(--mut)">Acha que existe fórmula que "garante" levar o bolão. A Copa é caótica; estratégia melhora a chance, não compra o título.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="honest">
+    <h3 style="margin-bottom:8px">🟢 Expectativa no lugar certo</h3>
+    <p>Bolão tem sorte envolvida — ninguém garante o título. Mas estratégia <b>aumenta suas chances</b> de jogar melhor que a média e levar o pote. Os números são exemplos ilustrativos. <b>+18 · jogue com responsabilidade.</b></p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="offer">
+    <p class="eyebrow">Oferta de lançamento</p>
+    <p class="price"><s>de R$ 99,90</s></p>
+    <div class="big">R$ 49,90</div>
+    <p class="stack"><b>Ebook completo + planilha de pontuação automática.</b><br>Preço de lançamento — depois volta pro cheio.</p>
+    <a class="btn" href="https://pay.kiwify.com.br/6UQRi4o">Garantir só este ebook — R$ 49,90</a>
+    <a class="btn alt bump" href="https://pay.kiwify.com.br/jlz4BpA">Ou leve os 2 ebooks (Combo) — R$ 79,00 · economize R$ 20,80</a>
+    <div class="guarantee"><div class="s">🛡️</div><div><b>Garantia incondicional de 7 dias.</b><br><span style="color:var(--mut)">Comprou, abriu, leu — e achou que não vale? Pede reembolso em 7 dias pela Kiwify e recebe <b style="color:var(--ink)">100% de volta</b>. Sem pergunta, sem burocracia. O risco é nosso.</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Perguntas frequentes</h2>
+  <details><summary>Esse método garante que vou ganhar o bolão?</summary><p>Ninguém garante — a Copa é caótica. Mas a estratégia te coloca pra jogar melhor que a maioria do bolão, e isso aumenta suas chances de levar o prêmio.</p></details>
+  <details><summary>Serve pra qualquer bolão?</summary><p>Sim — os conceitos valem pra Copa, Eurocopa, Libertadores e mata-matas em geral. O livro mostra como ajustar ao formato e ao tamanho do bolão.</p></details>
+  <details><summary>Como recebo? Funciona no celular?</summary><p>Após o Pix você acessa a área de membros da Kiwify e baixa o PDF (abre no celular) e a planilha. Recebe o acesso por e-mail também.</p></details>
+  <details><summary>A planilha funciona no Google Sheets?</summary><p>Funciona no Google Sheets e no Excel, direto do celular.</p></details>
+  <details><summary>É pagamento único?</summary><p>Sim, pagamento único. Sem assinatura.</p></details>
+  <details><summary>E se eu não gostar?</summary><p>Garantia de 7 dias. Pediu reembolso, a Kiwify devolve.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <p class="fine">Conteúdo educacional e recreativo. Sem garantia de ganho — participe apenas com o que pode perder. <b>+18 · jogue com responsabilidade.</b> Bolão informal entre amigos não é operação comercial de apostas/loteria. Apoio: Jogadores Anônimos · CVV 188.</p>
+</div></footer>
+
+<div class="sticky"><div class="wrap">
+  <div class="p"><b>R$ 49,90</b> · Pix · acesso imediato</div>
+  <a href="https://pay.kiwify.com.br/6UQRi4o">Quero agora</a>
+</div></div>
+
+<a class="wa-fab" href="https://wa.me/5543991946703?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Bol%C3%A3o%20da%20Copa%20com%20Estrat%C3%A9gia.%20Pode%20me%20ajudar%3F" aria-label="Tirar dúvida no WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.4 4 4 9.4 4 16.04c0 2.12.55 4.1 1.52 5.83L4 28l6.3-1.65a12 12 0 0 0 5.74 1.46h.01c6.63 0 12.03-5.4 12.03-12.04C28.08 9.4 22.68 4 16.04 4zm0 21.9a10 10 0 0 1-5.09-1.39l-.36-.21-3.74.98 1-3.65-.24-.37a9.96 9.96 0 0 1-1.53-5.32c0-5.5 4.48-9.98 9.99-9.98 2.67 0 5.18 1.04 7.06 2.93a9.92 9.92 0 0 1 2.93 7.06c0 5.5-4.48 9.97-9.99 9.97zm5.48-7.47c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+  <span>Dúvida?</span>
+</a>
+
+</body>
+</html>

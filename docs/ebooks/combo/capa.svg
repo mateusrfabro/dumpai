@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c2a2b"/>
+      <stop offset="1" stop-color="#06181a"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2fe6a8"/>
+      <stop offset="1" stop-color="#19b98a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffd86b"/>
+      <stop offset="1" stop-color="#e3b341"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e5a2e"/>
+      <stop offset="1" stop-color="#063d1d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="14" fill="url(#gold)"/>
+  <circle cx="1095" cy="105" r="52" fill="none" stroke="#ffd86b" stroke-width="4"/>
+  <text x="1095" y="120" fill="#ffd86b" font-size="40" font-weight="bold" text-anchor="middle">18+</text>
+
+  <text x="100" y="250" fill="#9fcec2" font-size="30" letter-spacing="5" font-weight="bold">2 EBOOKS + PLANILHAS · APOSTA ESPORTIVA</text>
+
+  <text x="100" y="400" fill="#ffffff" font-size="118" font-weight="bold">APOSTA COM</text>
+  <text x="100" y="520" fill="url(#acc)" font-size="118" font-weight="bold">MÉTODO</text>
+  <rect x="104" y="575" width="180" height="8" fill="url(#gold)"/>
+  <text x="100" y="650" fill="url(#gold)" font-size="46" font-weight="bold">COMBO · SPORTSBOOK + BOLÃO</text>
+  <text x="100" y="710" fill="#cfe9e2" font-size="34">Os 2 livros + as planilhas, num pacote só.</text>
+
+  <!-- Card 1: Sportsbook -->
+  <g transform="translate(120,860)">
+    <rect width="440" height="560" rx="22" fill="#11403d" stroke="url(#gold)" stroke-width="3"/>
+    <text x="36" y="70" fill="#7fb8ac" font-size="24" font-weight="bold" letter-spacing="3">EBOOK 1</text>
+    <text x="36" y="150" fill="#ffffff" font-size="52" font-weight="bold">SPORTS</text>
+    <text x="36" y="206" fill="#ffffff" font-size="52" font-weight="bold">BOOK</text>
+    <text x="36" y="262" fill="url(#acc)" font-size="40" font-weight="bold">COM MÉTODO</text>
+    <rect x="60"  y="430" width="70" height="90" rx="8" fill="#15514b"/>
+    <rect x="160" y="390" width="70" height="130" rx="8" fill="#1a6359"/>
+    <rect x="260" y="350" width="70" height="170" rx="8" fill="#1f7567"/>
+    <polyline points="50,470 130,420 230,400 360,330" fill="none" stroke="#2fe6a8" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="360" cy="330" r="9" fill="#fff"/>
+  </g>
+
+  <!-- Card 2: Bolão -->
+  <g transform="translate(640,860)">
+    <rect width="440" height="560" rx="22" fill="url(#green)" stroke="url(#gold)" stroke-width="3"/>
+    <text x="36" y="70" fill="#a7d8b6" font-size="24" font-weight="bold" letter-spacing="3">EBOOK 2</text>
+    <text x="36" y="150" fill="#ffffff" font-size="52" font-weight="bold">BOLÃO</text>
+    <text x="36" y="206" fill="#ffffff" font-size="52" font-weight="bold">DA COPA</text>
+    <text x="36" y="262" fill="url(#gold)" font-size="38" font-weight="bold">COM ESTRATÉGIA</text>
+    <g stroke="#7fb893" stroke-width="5" fill="none">
+      <line x1="60" y1="380" x2="150" y2="380"/><line x1="60" y1="440" x2="150" y2="440"/>
+      <line x1="150" y1="380" x2="150" y2="440"/><line x1="150" y1="410" x2="230" y2="410"/>
+      <line x1="60" y1="470" x2="150" y2="470"/>
+    </g>
+    <circle cx="150" cy="470" r="14" fill="#ffd86b"/>
+    <g transform="translate(300,360)" fill="url(#gold)">
+      <path d="M20 0 H90 V28 Q90 84 55 92 Q20 84 20 28 Z"/>
+      <rect x="48" y="92" width="14" height="34"/><rect x="32" y="126" width="46" height="14"/>
+    </g>
+  </g>
+
+  <!-- selo 2 em 1 -->
+  <circle cx="600" cy="845" r="60" fill="url(#gold)"/>
+  <text x="600" y="835" fill="#06181a" font-size="34" font-weight="bold" text-anchor="middle">2em1</text>
+  <text x="600" y="870" fill="#06181a" font-size="20" font-weight="bold" text-anchor="middle">COMBO</text>
+
+  <text x="100" y="1500" fill="#6f9a91" font-size="27">Conteúdo educacional. Apostas envolvem risco real de perda. Não é promessa de</text>
+  <text x="100" y="1538" fill="#6f9a91" font-size="27">lucro. Jogue com responsabilidade. +18.</text>
+</svg>

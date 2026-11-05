@@ -1,0 +1,60 @@
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Arial,sans-serif}
+  body{background:#f1f3f4;padding:18px;width:1100px}
+  .app{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e8eaed}
+  .bar .ico{width:26px;height:26px;border-radius:6px;background:#188038;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+  .bar .ttl{font-size:16px;font-weight:600;color:#202124}
+  .bar .star{color:#f9ab00}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th.col,td.rownum{background:#f8f9fa;color:#80868b;font-weight:500;text-align:center;border:1px solid #e0e0e0}
+  th.col{height:24px}
+  td.rownum{width:34px}
+  thead.h th{background:#e6f4ea;color:#0d652d;font-weight:700;border:1px solid #c9e7d3;padding:8px 10px;text-align:left;white-space:nowrap}
+  tbody td{border:1px solid #e8eaed;padding:7px 10px;color:#202124;white-space:nowrap}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .g{color:#137333;font-weight:600}.r{color:#c5221f;font-weight:600}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700}
+  .pill.green{background:#e6f4ea;color:#137333}.pill.red{background:#fce8e6;color:#c5221f}
+  .resumo{margin-top:0;background:#f8fbff;border:1px solid #d2e3fc;border-radius:0}
+  .layout{display:grid;grid-template-columns:1fr 280px}
+  .side{border-left:1px solid #e8eaed;padding:14px 16px;background:#f8fbff}
+  .side h4{font-size:12px;letter-spacing:.08em;color:#5f6368;text-transform:uppercase;margin-bottom:10px}
+  .kv{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #dadce0;font-size:13px}
+  .kv b{color:#202124}.kv .v{font-weight:700;font-variant-numeric:tabular-nums}
+  .tabs{display:flex;gap:2px;padding:8px 12px;background:#f8f9fa;border-top:1px solid #e8eaed}
+  .tab{font-size:12px;color:#5f6368;padding:6px 14px;border-radius:6px 6px 0 0}
+  .tab.on{background:#fff;color:#137333;font-weight:700;box-shadow:0 -2px 0 #188038 inset}
+  .cap{font-size:11px;color:#80868b;padding:6px 16px}
+</style></head><body>
+<div class="app">
+  <div class="bar"><span class="ico">📊</span><span class="ttl">Registro de Apostas — Aposta com Método</span><span class="star">★</span></div>
+  <div class="layout">
+    <div>
+      <table>
+        <tr><th class="col"></th><th class="col">A</th><th class="col">B</th><th class="col">C</th><th class="col">D</th><th class="col">E</th><th class="col">F</th><th class="col">G</th><th class="col">H</th></tr>
+        <thead class="h"><tr><td class="rownum">1</td><th>Data</th><th>Esporte</th><th>Evento</th><th>Odd</th><th>Stake</th><th>Resultado</th><th>Lucro (R$)</th><th>CLV %</th></tr></thead>
+        <tbody>
+          <tr><td class="rownum">2</td><td>14/06</td><td>Futebol</td><td>Flamengo x Vasco</td><td class="num">1.85</td><td class="num">50,00</td><td><span class="pill green">Green</span></td><td class="num g">+42,50</td><td class="num g">+3,2%</td></tr>
+          <tr><td class="rownum">3</td><td>15/06</td><td>Basquete</td><td>Lakers x Celtics</td><td class="num">2.10</td><td class="num">50,00</td><td><span class="pill red">Red</span></td><td class="num r">−50,00</td><td class="num r">−1,1%</td></tr>
+          <tr><td class="rownum">4</td><td>16/06</td><td>Futebol</td><td>Palmeiras x SPFC</td><td class="num">1.95</td><td class="num">50,00</td><td><span class="pill green">Green</span></td><td class="num g">+47,50</td><td class="num g">+2,8%</td></tr>
+          <tr><td class="rownum">5</td><td>18/06</td><td>Tênis</td><td>Alcaraz x Sinner</td><td class="num">1.72</td><td class="num">50,00</td><td><span class="pill red">Red</span></td><td class="num r">−50,00</td><td class="num g">+0,4%</td></tr>
+          <tr><td class="rownum">6</td><td>20/06</td><td>Futebol</td><td>Real x Barça</td><td class="num">2.30</td><td class="num">50,00</td><td><span class="pill green">Green</span></td><td class="num g">+65,00</td><td class="num g">+4,1%</td></tr>
+          <tr><td class="rownum">7</td><td>21/06</td><td>Futebol</td><td>City x Arsenal</td><td class="num">1.90</td><td class="num">50,00</td><td><span class="pill red">Red</span></td><td class="num r">−50,00</td><td class="num r">−0,6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="side">
+      <h4>Resumo (automático)</h4>
+      <div class="kv"><b>Total apostado</b><span class="v">R$ 300,00</span></div>
+      <div class="kv"><b>Lucro / Prejuízo</b><span class="v g">+R$ 5,00</span></div>
+      <div class="kv"><b>ROI / Yield</b><span class="v g">+1,7%</span></div>
+      <div class="kv"><b>Taxa de Green</b><span class="v">50%</span></div>
+      <div class="kv"><b>CLV médio</b><span class="v g">+1,5%</span></div>
+    </div>
+  </div>
+  <div class="tabs"><span class="tab">Config</span><span class="tab on">Registro</span><span class="tab">Matched Betting</span></div>
+  <div class="cap">Valores ilustrativos. A planilha calcula Lucro, ROI/Yield e CLV automaticamente.</div>
+</div>
+</body></html>

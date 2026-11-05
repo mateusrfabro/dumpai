@@ -42,5 +42,16 @@ rate limit) já está resolvida e é **genérica** — clone e troque só a "fea
 - **Limite de uso:** consumir só APÓS sucesso da IA (falha não cobra). `PAYWALL_ATIVO` desligado no local pra testar à vontade.
 
 ## Squad de agentes (em `~/.claude/agents/`, valem em todo projeto)
-`security`, `code-quality`, `ux-review`, `product-manager`, `llm-api-dev`, `tester`.
-Acione antes de divulgar (segurança/custo) e pra revisar UX/conversão.
+**Engenharia/qualidade:** `security`, `code-quality`, `ux-review`, `product-manager`,
+`llm-api-dev`, `tester`. Acione antes de divulgar (segurança/custo) e pra revisar UX/conversão.
+
+**Go-to-market (vender o produto):**
+- `copywriter` — copy honesta (página, VSL, e-mail, anúncio, WhatsApp).
+- `estrategista-oferta` — oferta, preço/ancoragem, order bump/upsell, esteira, funil.
+- `infoproduto-kiwify` — empacotar/publicar ebook/curso/app na Kiwify + entrega/acesso.
+- `outbound-base` — campanha pra base própria (e-mail/WhatsApp/SMS) com deliverability + **LGPD**.
+- `trafego-pago` — anúncios Meta/Google (públicos, ângulos, CPA-teto a partir da margem).
+- `growth-analytics` — métricas do funil (conversão, CAC, LTV, ROAS) pra decidir por número.
+
+Ordem típica de um lançamento: `estrategista-oferta` (oferta) → `copywriter` (copy) →
+`infoproduto-kiwify` (publica) → `outbound-base` + `trafego-pago` (tráfego) → `growth-analytics` (mede).
